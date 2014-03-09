@@ -1,7 +1,7 @@
 Cell.Staircase = function(/* FIXME */) {
 	Cell.call(this, {
 		ch: "<",
-		fg: "#888"
+		fg: [136, 136, 136]
 	}, false);
 }
 Cell.Staircase.extend(Cell);

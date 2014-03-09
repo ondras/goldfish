@@ -8,47 +8,58 @@ var Level = function() {
 	this._create();
 }
 
+Level.prototype.drawMemory = function() {
+}
+
 Level.prototype.activate = function() {
 	for (var p in this._beings) {
 		Game.scheduler.add(this._beings[p], true);
 	}
+	
+	Game.display.clear();
+	this.drawMemory();
+	// FIXME Game.status.redraw();
 }
 
 Level.prototype.deactivate = function() {
 	Game.scheduler.clear();
 }
 
+Level.prototype.blocks = function(xy) {
+	return (this._cells[xy] || this._empty).blocks();
+}
+
 Level.prototype.draw = function(xy) {
-	var entity = this._beings[xy] || this._items[xy] || this._cells[xy] || this._empty;
-	var visual = entity.getVisual();
+	var visual = this._visualAt(xy);
 	var bg = this._getBackgroundColor(xy);
-	Game.display.draw(xy.x, xy.y + Game.TEXT_HEIGHT, visual.ch, visual.fg, ROT.Color.toRGB(bg));
+	Game.display.draw(xy.x, xy.y + Game.TEXT_HEIGHT, visual.ch, ROT.Color.toRGB(visual.fg), ROT.Color.toRGB(bg));
 }
 
 Level.prototype.getSize = function() {
 	return this._size;
 }
 
-Level.prototype.setEntity = function(entity, xy) {
-	/* FIXME remove from old position, draw */
-	if (entity.getLevel() == this) {
-		var oldXY = entity.getXY();
+Level.prototype.getBeingAt = function(xy) {
+	return this._beings[xy] || null;
+}
+
+Level.prototype.setBeing = function(being, xy) {
+	/* remove from old position, draw */
+	if (being.getLevel() == this) {
+		var oldXY = being.getXY();
 		delete this._beings[oldXY];
 		if (Game.level == this) { this.draw(oldXY); }
 	}
 
-	entity.setPosition(xy, this); /* propagate position data to the entity itself */
+	being.setPosition(xy, this); /* propagate position data to the entity itself */
 
-	/* FIXME set new position, draw */
-	this._beings[xy] = entity;
-	if (Game.level == this) { 
-		this.draw(xy); 
-		Game.textBuffer.write("An entity moves to " + xy + ".");
-	}
+	/* set new position, draw */
+	this._beings[xy] = being;
+	if (Game.level == this) { this.draw(xy); }
 }
 
-Level.prototype.getBeings = function() {
-	return this._beings;
+Level.prototype._visualAt = function(xy) {
+	return (this._beings[xy] || this._items[xy] || this._cells[xy] || this._empty).getVisual();
 }
 
 Level.prototype._create = function() {

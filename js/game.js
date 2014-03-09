@@ -29,6 +29,7 @@ var Game = {
 				
 				var width = this.MAP_SIZE.x;
 				var height = this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y;
+				/* FIXME font in data-uri */
 				this.display = new ROT.Display({fontSize:16, spacing:1, fontFamily:"droid sans mono", width:width, height:height});
 
 				this.textBuffer = new TextBuffer(this.display);
@@ -46,10 +47,10 @@ var Game = {
 				this.player = new Player();
 
 				/* FIXME build a level and position a player */
-				var level = new Level.Overview();
+				var level = new Level.Cavern();
 				var size = level.getSize();
 				this._switchLevel(level);
-				this.level.setEntity(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+				this.level.setBeing(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
 
 				this._engine.start();
 			break;

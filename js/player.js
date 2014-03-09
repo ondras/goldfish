@@ -1,5 +1,5 @@
 var Player = function() {
-	Being.call(this, {ch:"@", fg:"#ffe87c"});
+	Being.call(this, {ch:"@", fg:[255, 232, 124]});
 	
 	this._promise = null;
 	
@@ -24,10 +24,6 @@ var Player = function() {
 	this._keys[ROT.VK_NUMPAD4] = 6;
 	this._keys[ROT.VK_Y] = 7;
 	this._keys[ROT.VK_NUMPAD7] = 7;
-
-	this._keys[ROT.VK_PERIOD] = -1;
-	this._keys[ROT.VK_CLEAR] = -1;
-	this._keys[ROT.VK_NUMPAD5] = -1;
 }
 Player.extend(Being);
 
@@ -55,14 +51,14 @@ Player.prototype.handleEvent = function(e) {
 		Game.textBuffer.clear();
 
 		var direction = this._keys[code];
-		if (direction == -1) { /* noop */
-			/* FIXME show something? */
-		} else {
-
-			var dir = ROT.DIRS[8][direction];
-			var xy = this._xy.plus(new XY(dir[0], dir[1]));
-
-			this._level.setEntity(this, xy); /* FIXME collision detection */
+		var dir = ROT.DIRS[8][direction];
+		var xy = this._xy.plus(new XY(dir[0], dir[1]));
+		var being = this._level.getBeingAt(xy);
+		if (being) { /* attack */
+		} else if (this._level.blocks(xy)) { /* collision, noop */
+			return this._listen();
+		} else { /* movement */
+			this._level.setBeing(this, xy);
 		}
 
 		this._promise.fulfill();
@@ -82,6 +78,21 @@ Player.prototype.handleEvent = function(e) {
 		}
 	}
 
+}
+
+Player.prototype.computeFOV = function() {
+	var result = {};
+	
+	var level = this._level;
+	var fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
+		return !level.blocks(new XY(x, y));
+	});
+	fov.compute(this._xy.x, this._xy.y, 8 /* FIXME sight */, function(x, y, r, amount) {
+		var xy = new XY(x, y);
+		result[xy] = xy;
+	});
+	
+	return result;
 }
 
 Player.prototype._listen = function(e) {

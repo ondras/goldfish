@@ -6,9 +6,8 @@ Level.Overview = function() {
 }
 Level.Overview.extend(Level);
 
-Level.Overview.prototype.activate = function() {
-	Level.prototype.activate.call(this);
-
+/** Overview has no memory, everything is visible */
+Level.Overview.prototype.drawMemory = function() {
 	var xy = new XY();
 	for (var i=0;i<this._size.x;i++) {
 		xy.x = i;

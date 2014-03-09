@@ -16,15 +16,20 @@ Cell.prototype.blocks = function() {
 
 Cell.wall = new Cell({
 	ch: "#",
-	fg: "#888"
+	fg: [102, 102, 102]
+}, true);
+
+Cell.grass = new Cell({
+	ch: "#",
+	fg: [136, 170, 102]
 }, true);
 
 Cell.empty = new Cell({
 	ch: ".",
-	fg: "#888"
+	fg: [51, 51, 51]
 }, false);
 
 Cell.water = new Cell({
 	ch: "≈",
-	fg: "#33c"
+	fg: [68, 68, 136]
 });
