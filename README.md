@@ -5,3 +5,5 @@ Goldfish
 
 Development log
 ---------------
+  - Sunday evening: skeleton files, level shape generation
+  
