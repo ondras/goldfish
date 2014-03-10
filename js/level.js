@@ -12,6 +12,11 @@ var Level = function() {
 Level.prototype.drawMemory = function() {
 }
 
+/** Eating a seaweed, visiting an O2 bubble */
+Level.prototype.removeCell = function(xy) {
+	delete this._cells[xy];
+}
+
 Level.prototype.activate = function() {
 	for (var p in this._beings) {
 		Game.scheduler.add(this._beings[p], true);
@@ -53,6 +58,8 @@ Level.prototype.setBeing = function(being, xy) {
 	}
 
 	being.setPosition(xy, this); /* propagate position data to the entity itself */
+	var cell = this._cells[xy];
+	if (cell) { cell.enter(being); }
 
 	/* set new position, draw */
 	this._beings[xy] = being;

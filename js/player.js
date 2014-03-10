@@ -63,8 +63,8 @@ Player.prototype.act = function() {
 	Game.status.updatePart("turns");
 	this._promise = new Promise();
 	
-	Game.textBuffer.write("It is your turn, press any relevant key.");
-	Game.textBuffer.flush();
+	Game.text.write("It is your turn, press any relevant key.");
+	Game.text.flush();
 	
 	this._listen();
 	
@@ -81,7 +81,7 @@ Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
 	if (code in this._keys) {
-		Game.textBuffer.clear();
+		Game.text.clear();
 
 		var direction = this._keys[code];
 		var dir = ROT.DIRS[8][direction];

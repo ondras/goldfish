@@ -7,7 +7,7 @@ var Game = {
 	player: null,
 	level: null,
 	display: null,
-	textBuffer: null,
+	text: null,
 	status: null,
 	turns: -1,
 
@@ -39,13 +39,13 @@ var Game = {
 
 				this.status = new Status(this.display);
 
-				this.textBuffer = new TextBuffer(this.display);
-				this.textBuffer.configure({
+				this.text = new TextBuffer(this.display);
+				this.text.configure({
 					display: this.display,
 					position: new XY(0, 0),
 					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
 				});
-				this.textBuffer.clear();
+				this.text.clear();
 
 				document.body.appendChild(this.display.getContainer());
 				window.addEventListener("resize", this);

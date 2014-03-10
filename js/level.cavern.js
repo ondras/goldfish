@@ -36,6 +36,8 @@ Level.Cavern.prototype.setBeing = function(being, xy) {
 	}
 
 	being.setPosition(xy, this); /* propagate position data to the entity itself */
+	var cell = this._cells[xy];
+	if (cell) { cell.enter(being); }
 
 	if (being == Game.player) { this._updateFOV(being); }
 
@@ -190,7 +192,11 @@ Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
 	while (xy in this._free && limit) {
 		limit--;
 		delete this._free[xy];
-		this._cells[xy] = new Cell.Seaweed(xy);
+		
+		var seaweed = new Cell.Seaweed();
+		this._cells[xy] = seaweed;
+		seaweed.setPosition(new XY(xy.x, xy.y), this);
+
 		xy.y += dy;
 	}
 }
