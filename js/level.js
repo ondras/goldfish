@@ -18,7 +18,7 @@ Level.prototype.activate = function() {
 	
 	Game.display.clear();
 	this.drawMemory();
-	// FIXME Game.status.redraw();
+	Game.status.update();
 }
 
 Level.prototype.deactivate = function() {

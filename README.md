@@ -5,5 +5,6 @@ Goldfish
 
 Development log
 ---------------
-  - Sunday evening: skeleton files, level shape generation, fov
+  - Sunday evening: base files, level shape generation, fov
+  - Monday: stats, status
   

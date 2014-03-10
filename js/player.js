@@ -1,6 +1,12 @@
 var Player = function() {
 	Being.call(this, {ch:"@", fg:[255, 232, 124]});
 	
+	this._stats.hp = 15;
+	this._stats.maxhp = 20;
+	
+	this._stats.o2 = 10;
+	this._stats.maxo2 = 20;
+
 	this._promise = null;
 	
 	this._keys = {};
@@ -27,7 +33,21 @@ var Player = function() {
 }
 Player.extend(Being);
 
+Player.prototype.setStat = function(name, value) {
+	Being.prototype.setStat.call(this, name, value);
+	Game.status.update();
+}
+
+Player.prototype.getStat = function(name, value) {
+	var base = Being.prototype.getStat.call(this, name, value);
+
+	/* FIXME items */
+	return base;
+}
+
 Player.prototype.act = function() {
+	Game.turns++;
+	Game.status.updatePart("turns");
 	this._promise = new Promise();
 	
 	Game.textBuffer.write("It is your turn, press any relevant key.");
@@ -87,7 +107,7 @@ Player.prototype.computeFOV = function() {
 	var fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
 		return !level.blocks(new XY(x, y));
 	});
-	fov.compute(this._xy.x, this._xy.y, 8 /* FIXME sight */, function(x, y, r, amount) {
+	fov.compute(this._xy.x, this._xy.y, this.getStat("sight"), function(x, y, r, amount) {
 		var xy = new XY(x, y);
 		result[xy] = xy;
 	});

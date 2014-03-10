@@ -1,13 +1,15 @@
 var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 2,
-	MAP_SIZE: new XY(100, 30),
+	MAP_SIZE: new XY(90, 30),
 
 	scheduler: null,
 	player: null,
 	level: null,
 	display: null,
 	textBuffer: null,
+	status: null,
+	turns: -1,
 
 	_engine: null,
 	
@@ -32,6 +34,8 @@ var Game = {
 				/* FIXME font in data-uri */
 				this.display = new ROT.Display({fontSize:16, spacing:1, fontFamily:"droid sans mono", width:width, height:height});
 
+				this.status = new Status(this.display);
+
 				this.textBuffer = new TextBuffer(this.display);
 				this.textBuffer.configure({
 					display: this.display,
@@ -47,10 +51,9 @@ var Game = {
 				this.player = new Player();
 
 				/* FIXME build a level and position a player */
-				var level = new Level.Cavern();
+				var level = new Level.Overview();
 				var size = level.getSize();
-				this._switchLevel(level);
-				this.level.setBeing(this.player, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+				this._switchLevel(level, new XY(Math.round(size.x/2), Math.round(size.y/2)));
 
 				this._engine.start();
 			break;
@@ -62,10 +65,11 @@ var Game = {
 		/* FIXME show something */
 	},
 
-	_switchLevel: function(level) {
+	_switchLevel: function(level, xy) {
 		if (this.level) { this.level.deactivate(); }
 		this.level = level;
 		this.level.activate();
+		this.level.setBeing(this.player, xy);
 	},
 	
 	_resize: function() {

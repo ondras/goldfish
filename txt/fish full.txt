@@ -25,5 +25,5 @@
 
 
 
-<*(((><    Attack: 14   HP: ##################################################
-Speed: 30  Defense: 8   O2: oooooooooooooooooooooooooooooooooooooooooooooooooo
+<*(((><      Attack:  14  Sight: 20  HP ##################################################
+Turns: 30    Defense:  8  Speed: 15  O2 oooooooooooooooooooooooooooooooooooooooooooooooooo

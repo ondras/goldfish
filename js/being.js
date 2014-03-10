@@ -1,21 +1,38 @@
 var Being = function(visual) {
 	Entity.call(this, visual);
 
-	this._speed = 100;
-	this._hp = 10;
+	this._stats = {};
+	Stats.all.forEach(function(name) {
+		this._stats[name] = Stats[name].def;
+	}, this);
 }
 Being.extend(Entity);
 
+Being.prototype.getStat = function(name) {
+	return this._stats[name];
+}
+
+Being.prototype.setStat = function(name, value) {
+	this._stats[name] = value;
+	return this;
+}
+
+Being.prototype.adjustStat = function(name, diff) {
+	/* cannot use this.getStat(), might be modified by items */
+	this.setStat(name, this._stats[name] + diff);
+	return this;
+}
 /**
+
  * Called by the Scheduler
  */
 Being.prototype.getSpeed = function() {
-	return this._speed;
+	return this.getStat("speed");
 }
 
 Being.prototype.damage = function(damage) {
-	this._hp -= damage;
-	if (this._hp <= 0) { this.die(); }
+	this.adjustStat("hp", -damage);
+	if (this.getStat("hp") <= 0) { this.die(); }
 }
 
 Being.prototype.act = function() {
