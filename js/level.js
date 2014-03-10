@@ -3,6 +3,7 @@ var Level = function() {
 	this._beings = {};
 	this._items = {};
 	this._cells = {};
+	this._free = {};
 	this._empty = Cell.empty;
 
 	this._create();
@@ -64,35 +65,56 @@ Level.prototype._visualAt = function(xy) {
 
 Level.prototype._create = function() {
 	this._createWalls();
-//	this._createFree();
-	this._createBeings();
 	this._createItems();
+	this._createBeings();
 }
 
 Level.prototype._createWalls = function() {}
-Level.prototype._createBeings = function() {}
 Level.prototype._createItems = function() {}
+Level.prototype._createBeings = function() {}
 
 Level.prototype._createFree = function() {
-	var free = this.free;
-	var walls = this.walls;
+	var free = this._free;
+	var cells = this._cells;
 
-	var center = new XY(Math.round(this.size.x/2), Math.round(this.size.y/2));
-	if (center in walls) { delete walls[center]; }
-
+	/* start at center */
+	var center = new XY(Math.round(this._size.x/2), Math.round(this._size.y/2));
 	var dirs = ROT.DIRS[8];
+	var radius = 0;
 
-	var scan = function(xy) {
-		free[xy] = 1;
+	while (center in cells) { /* find a starting free place */
+		radius++;
 		dirs.forEach(function(dir) {
-			var xy2 = new XY(xy.x + dir[0], xy.y + dir[1]);
-			if (xy2 in walls || xy2 in free) { return; }
-			scan(xy2);
+			var c2 = new XY(center.x + radius * dir[0], center.y + radius * dir[1]);
+			if (!(c2 in cells)) { center = c2; }
 		});
 	}
 
+	/* flood fill free cells */
+	var scan = function(xy) {
+		free[xy] = xy;
+		dirs.forEach(function(dir) {
+			var xy2 = new XY(xy.x + dir[0], xy.y + dir[1]);
+			if (xy2 in cells || xy2 in free) { return; }
+			scan(xy2);
+		});
+	}
 	scan(center);
 }
 
 Level.prototype._getBackgroundColor = function() {
+}
+
+Level.prototype._findFreeClosestTo = function(xy) {
+	var best = null;
+	var dist = Infinity;
+	for (var id in this._free) {
+		var d = this._free[id].dist8(xy);
+		if (d < dist) {
+			dist = d;
+			best = this._free[id];
+		}
+	}
+	
+	return best;
 }

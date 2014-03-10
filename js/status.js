@@ -1,5 +1,4 @@
 var Status = function(display) {
-	/* FIXME colors! */
 	this._display = display;
 	this._offset = Game.TEXT_HEIGHT + Game.MAP_SIZE.y + 1;
 }
@@ -7,12 +6,13 @@ var Status = function(display) {
 Status.prototype.update = function() {
 	/* first column */
 	var x = 0;
-	this._display.drawText(x, this._offset, "<*)))><");
+	var gold = Game.player.getVisual().fg;
+	this._display.drawText(x, this._offset, "%c{" + ROT.Color.toRGB(gold) + "}<*)))><");
 	this._label(x, 1, "Turns");
 	this.updatePart("turns");
 
 	/* second column */
-	x = 13;
+	x = 14;
 	this._label(x, 0, Stats.attack.label);
 	this.updatePart("attack");
 	this._label(x, 1, Stats.defense.label);
@@ -20,14 +20,14 @@ Status.prototype.update = function() {
 
 
 	/* third column */
-	x = 26;
+	x = 27;
 	this._label(x, 0, Stats.sight.label);
 	this.updatePart("sight");
 	this._label(x, 1, Stats.speed.label);
 	this.updatePart("speed");
 
 	/* fourth column */
-	x = 37;
+	x = 38;
 	this._label(x, 0, Stats.hp.label);
 	this.updatePart("hp");
 	this._label(x, 1, Stats.o2.label);
@@ -43,31 +43,31 @@ Status.prototype.updatePart = function(part) {
 		break;
 
 		case "attack":
-			var x = 22, y = 0, len = 2;
+			var x = 23, y = 0, len = 2;
 			this._erase(x, y, len);
 			this._number(x + len - 1, y, Game.player.getStat(part));
 		break;
 
 		case "defense":
-			var x = 22, y = 1, len = 2;
+			var x = 23, y = 1, len = 2;
 			this._erase(x, y, len);
 			this._number(x + len - 1, y, Game.player.getStat(part));
 		break;
 
 		case "sight":
-			var x = 33, y = 0, len = 2;
+			var x = 34, y = 0, len = 2;
 			this._erase(x, y, len);
 			this._number(x + len - 1, y, Game.player.getStat(part));
 		break;
 
 		case "speed":
-			var x = 33, y = 1, len = 2;
+			var x = 34, y = 1, len = 2;
 			this._erase(x, y, len);
 			this._number(x + len - 1, y, Game.player.getStat(part));
 		break;
 
 		case "hp":
-			var x = 41, y = 0;
+			var x = 42, y = 0;
 			this._erase(x, y, Game.MAP_SIZE.x - x);
 			var hp = Game.player.getStat("hp");
 			var maxhp = Game.player.getStat("maxhp");
@@ -81,7 +81,7 @@ Status.prototype.updatePart = function(part) {
 		break;
 
 		case "o2":
-			var x = 41, y = 1;
+			var x = 42, y = 1;
 			this._erase(x, y, Game.MAP_SIZE.x - x);
 			var o2 = Game.player.getStat("o2");
 			var maxo2 = Game.player.getStat("maxo2");
@@ -102,7 +102,7 @@ Status.prototype._label = function(x, y, str) {
 
 Status.prototype._number = function(x, y, num) {
 	var str = num + "";
-	this._display.drawText(x - str.length + 1, this._offset + y, str);
+	this._display.drawText(x - str.length + 1, this._offset + y, "%c{#fff}" + str);
 }
 
 Status.prototype._erase = function(x, y, count) {

@@ -29,10 +29,13 @@ var Game = {
 				this.scheduler = new ROT.Scheduler.Speed();
 				this._engine = new ROT.Engine(this.scheduler);
 				
-				var width = this.MAP_SIZE.x;
-				var height = this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y;
-				/* FIXME font in data-uri */
-				this.display = new ROT.Display({fontSize:16, spacing:1, fontFamily:"droid sans mono", width:width, height:height});
+				var options = {
+					width: this.MAP_SIZE.x,
+					height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
+					fontFamily: "droid sans mono",
+					fg: "#999"
+				}
+				this.display = new ROT.Display(options);
 
 				this.status = new Status(this.display);
 
@@ -51,9 +54,9 @@ var Game = {
 				this.player = new Player();
 
 				/* FIXME build a level and position a player */
-				var level = new Level.Overview();
+				var level = new Level.Cavern();
 				var size = level.getSize();
-				this._switchLevel(level, new XY(Math.round(size.x/2), Math.round(size.y/2)));
+				this._switchLevel(level, level.getEntrance());
 
 				this._engine.start();
 			break;

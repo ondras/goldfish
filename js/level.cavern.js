@@ -1,9 +1,11 @@
-Level.Cavern = function(size) {
+Level.Cavern = function() {
 	this._colors = [];
 	this._noise = new ROT.Noise.Simplex();
 	this._memory = {};
 	
 	this._fov = {};
+	this._entrance = null;
+	this._exit = null; /* not really an exit, just a location for the item */
 
 	Level.call(this);
 }
@@ -13,6 +15,10 @@ Level.Cavern.prototype.drawMemory = function() {
 	for (var xy in this._memory) {
 		this._drawWeak(xy, this._memory[xy]);
 	}
+}
+
+Level.Cavern.prototype.getEntrance = function() {
+	return this._entrance;
 }
 
 Level.Cavern.prototype.draw = function(xy) {
@@ -89,6 +95,24 @@ Level.Cavern.prototype._createColors = function() {
 }
 
 Level.Cavern.prototype._createWalls = function() {
+	var limit = this._size.x * this._size.y * 0.333;
+	do {
+		this._cells = {};
+		this._free = {};
+		
+		this._tryCreateWalls();
+		this._createFree();
+	} while (Object.keys(this._free).length < limit);
+	
+	var left = ROT.RNG.getUniform() > 0.5;
+	var top = ROT.RNG.getUniform() > 0.5;
+	this._entrance = this._createCorner(left, top);
+	this._exit = this._createCorner(!left, !top);
+	
+	this._cells[this._entrance] = new Cell.Staircase("<");
+}
+
+Level.Cavern.prototype._tryCreateWalls = function() {
 	for (var i=0;i<this._size.x;i++) {
 		this._cells[new XY(i, 0)] = Cell.wall;
 		this._cells[new XY(i, this._size.y-1)] = Cell.wall;
@@ -120,4 +144,20 @@ Level.Cavern.prototype._createWalls = function() {
 		var xy = new XY(x+1, y+1);
 		cells[xy] = Cell.wall;
 	});
+}
+
+Level.Cavern.prototype._createCorner = function(left, top) {
+	var corner = new XY();
+	corner.x = left ? 0 : this._size.x-1;
+	corner.y = top ? 0 : this._size.y-1;
+
+	corner = this._findFreeClosestTo(corner);
+
+	/* shift towards the center */
+	corner.x += (left ? 1 : -1);
+	corner.y += (top ? 1 : -1);
+
+	delete this._cells[corner]; /* just in case it was not free */
+	delete this._free[corner]; /* not free anymore :) */
+	return corner;
 }

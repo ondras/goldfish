@@ -9,7 +9,7 @@ var Being = function(visual) {
 Being.extend(Entity);
 
 Being.prototype.getStat = function(name) {
-	return this._stats[name];
+	return Math.max(0, this._stats[name]);
 }
 
 Being.prototype.setStat = function(name, value) {

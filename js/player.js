@@ -1,5 +1,5 @@
 var Player = function() {
-	Being.call(this, {ch:"@", fg:[255, 232, 124]});
+	Being.call(this, {ch:"@", fg:[255, 220, 120]});
 	
 	this._stats.hp = 15;
 	this._stats.maxhp = 20;
