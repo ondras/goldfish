@@ -22,8 +22,8 @@ Being.prototype.adjustStat = function(name, diff) {
 	this.setStat(name, this._stats[name] + diff);
 	return this;
 }
-/**
 
+/**
  * Called by the Scheduler
  */
 Being.prototype.getSpeed = function() {

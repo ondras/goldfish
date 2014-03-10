@@ -161,3 +161,36 @@ Level.Cavern.prototype._createCorner = function(left, top) {
 	delete this._free[corner]; /* not free anymore :) */
 	return corner;
 }
+
+Level.Cavern.prototype._createItems = function() {
+	this._createSeaweed();
+}
+
+Level.Cavern.prototype._createSeaweed = function() {
+	for (var i=0;i<this._size.x;i++) {
+		if (ROT.RNG.getUniform() < Rules.SEAWEED_CHANCE) { continue; }
+		var dy = (ROT.RNG.getUniform() > 0.5 ? 1 : -1);
+		var xy = new XY(i, Math.round(this._size.y/2));
+		var lastFree = null;
+		
+		while (xy.y > 0 && xy.y < this._size.y) {
+			xy.y += dy;
+			if (xy in this._free) { lastFree = new XY(xy.x, xy.y); }
+		}
+		if (lastFree) { this._createSeaweedLine(lastFree, -dy); }
+		
+	}
+}
+
+Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
+	var min = Rules.SEAWEED_LENGTH[0];
+	var max = Rules.SEAWEED_LENGTH[1];
+	var limit = min + Math.floor(ROT.RNG.getUniform()*(max-min));
+
+	while (xy in this._free && limit) {
+		limit--;
+		delete this._free[xy];
+		this._cells[xy] = new Cell.Seaweed(xy);
+		xy.y += dy;
+	}
+}

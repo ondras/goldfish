@@ -1,7 +1,7 @@
-Cell.Seaweed = function(direction) {
+Cell.Seaweed = function(xy) {
 	Cell.call(this, {
-		ch: direction == 1 ? "(" : ")",
-		fg: "#3f3"
+		ch: ((xy.x+xy.y) % 2 ? "(" : ")"),
+		fg: [40, 200, 40]
 	}, false);
 }
 Cell.Seaweed.extend(Cell);
