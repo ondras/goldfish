@@ -4,11 +4,9 @@ var Cell = function(visual, blocks) {
 }
 Cell.extend(Entity);
 
-Cell.prototype.enter = function(being) {
-}
-
-Cell.prototype.activate = function(being) {
-}
+Cell.prototype.enter = null;
+Cell.prototype.activate = null;
+Cell.prototype.describe = null;
 
 Cell.prototype.blocks = function() {
 	return this._blocks;

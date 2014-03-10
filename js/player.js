@@ -63,7 +63,7 @@ Player.prototype.act = function() {
 	Game.status.updatePart("turns");
 	this._promise = new Promise();
 	
-	Game.text.write("It is your turn, press any relevant key.");
+	this._describe();
 	Game.text.flush();
 	
 	this._listen();
@@ -81,36 +81,54 @@ Player.prototype.handleEvent = function(e) {
 	var code = e.keyCode;
 
 	if (code in this._keys) {
-		Game.text.clear();
-
 		var direction = this._keys[code];
 		var dir = ROT.DIRS[8][direction];
 		var xy = this._xy.plus(new XY(dir[0], dir[1]));
 		var being = this._level.getBeingAt(xy);
 		if (being) { /* attack */
+			Game.text.clear();
+			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
 			return this._listen();
 		} else { /* movement */
+			Game.text.clear();
 			this._level.setBeing(this, xy);
 		}
 
-		this._promise.fulfill();
-	} else {
-		switch (e.keyCode) {
-			case ROT.VK_I:
-				/* FIXME inventory */
-			break;
-
-			case ROT.VK_Q:
-				/* FIXME quests */
-			break;
-			
-			default: /* unrecognized key */
-				this._listen();
-			break;
-		}
+		return this._promise.fulfill();
 	}
 
+	switch (e.keyCode) {
+		case ROT.VK_I:
+			/* FIXME inventory */
+		break;
+
+		case ROT.VK_Q:
+			/* FIXME quests */
+		break;
+		
+		case ROT.VK_QUESTION_MARK: 
+			/* FIXME help */
+		break;
+		
+		case ROT.VK_RETURN:
+			var item = this._level.getItemAt(this._xy);
+			var cell = this._level.getCellAt(this._xy);
+			if (item) {
+				this._pick(item);
+				this._promise.fulfill();
+			} else if (cell.activate) {
+				Game.text.clear();
+				cell.activate(this);
+				this._promise.fulfill();
+			}
+		break;
+		
+		default: /* unrecognized key */
+			return this._listen();
+		break;
+	}
+	
 }
 
 Player.prototype.computeFOV = function() {
@@ -132,6 +150,10 @@ Player.prototype._listen = function(e) {
 	window.addEventListener("keydown", this);
 }
 
+Player.prototype._attack = function(being) {
+	/* FIXME */
+}
+
 Player.prototype._useO2 = function() {
 	var current = this.getStat("o2");
 	if (current) {
@@ -140,5 +162,16 @@ Player.prototype._useO2 = function() {
 	} else if (ROT.RNG.getUniform() > Rules.SUFFOCATE_CHANCE) {
 		/* FIXME text */
 		this.damage(1);
+	}
+}
+
+Player.prototype._describe = function() {
+	var cell = this._level.getCellAt(this._xy);
+	if (cell.describe) {
+		Game.text.write("You see " + cell.describe());
+	}
+	
+	var item = this._level.getItemAt(this._xy);
+	if (item) { 
 	}
 }

@@ -1,7 +1,12 @@
-Level.Cavern = function() {
+Level.Cavern = function(overview, xy) {
 	this._colors = [];
 	this._noise = new ROT.Noise.Simplex();
 	this._memory = {};
+	
+	this._overview = {
+		level: overview,
+		xy: xy
+	}
 	
 	this._fov = {};
 	this._entrance = null;
@@ -37,7 +42,7 @@ Level.Cavern.prototype.setBeing = function(being, xy) {
 
 	being.setPosition(xy, this); /* propagate position data to the entity itself */
 	var cell = this._cells[xy];
-	if (cell) { cell.enter(being); }
+	if (cell && cell.enter) { cell.enter(being); }
 
 	if (being == Game.player) { this._updateFOV(being); }
 
@@ -111,7 +116,9 @@ Level.Cavern.prototype._createWalls = function() {
 	this._entrance = this._createCorner(left, top);
 	this._exit = this._createCorner(!left, !top);
 	
-	this._cells[this._entrance] = new Cell.Staircase("<");
+	var staircase = new Cell.Staircase(true); /* true = up */
+	staircase.setTarget(this._overview.level, this._overview.xy);
+	this._cells[this._entrance] = staircase;
 }
 
 Level.Cavern.prototype._tryCreateWalls = function() {

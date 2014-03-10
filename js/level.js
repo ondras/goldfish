@@ -45,8 +45,21 @@ Level.prototype.getSize = function() {
 	return this._size;
 }
 
+Level.prototype._visualAt = function(xy) {
+	var xys = xy.toString(); /* cache to optimize for speed */
+	return (this._beings[xys] || this._items[xys] || this._cells[xys] || this._empty).getVisual();
+}
+
 Level.prototype.getBeingAt = function(xy) {
 	return this._beings[xy] || null;
+}
+
+Level.prototype.getItemAt = function(xy) {
+	return this._items[xy] || null;
+}
+
+Level.prototype.getCellAt = function(xy) {
+	return this._cells[xy] || this._empty;
 }
 
 Level.prototype.setBeing = function(being, xy) {
@@ -59,16 +72,13 @@ Level.prototype.setBeing = function(being, xy) {
 
 	being.setPosition(xy, this); /* propagate position data to the entity itself */
 	var cell = this._cells[xy];
-	if (cell) { cell.enter(being); }
+	if (cell && cell.enter) { cell.enter(being); }
 
 	/* set new position, draw */
 	this._beings[xy] = being;
 	if (Game.level == this) { this.draw(xy); }
 }
 
-Level.prototype._visualAt = function(xy) {
-	return (this._beings[xy] || this._items[xy] || this._cells[xy] || this._empty).getVisual();
-}
 
 Level.prototype._create = function() {
 	this._createWalls();

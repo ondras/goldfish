@@ -54,9 +54,10 @@ var Game = {
 				this.player = new Player();
 
 				/* FIXME build a level and position a player */
-				var level = new Level.Cavern();
+				var overview = new Level.Overview();
+				var level = new Level.Cavern(overview, new XY(50, 15)); /* FIXME */
 				var size = level.getSize();
-				this._switchLevel(level, level.getEntrance());
+				this.switchLevel(level, level.getEntrance());
 
 				this._engine.start();
 			break;
@@ -68,7 +69,7 @@ var Game = {
 		/* FIXME show something */
 	},
 
-	_switchLevel: function(level, xy) {
+	switchLevel: function(level, xy) {
 		if (this.level) { this.level.deactivate(); }
 		this.level = level;
 		this.level.activate();
