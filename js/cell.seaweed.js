@@ -2,7 +2,7 @@ Cell.Seaweed = function() {
 	Cell.call(this, {
 		ch: "",
 		fg: [40, 200, 40]
-	}, false);
+	}, false, "a seaweed");
 }
 Cell.Seaweed.extend(Cell);
 

@@ -1,3 +1,5 @@
+ROT.RNG.setSeed(1394485396871);
+
 var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 3,
@@ -33,6 +35,7 @@ var Game = {
 					width: this.MAP_SIZE.x,
 					height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
 					fontFamily: "droid sans mono",
+					spacing: 1,
 					fg: "#999"
 				}
 				this.display = new ROT.Display(options);

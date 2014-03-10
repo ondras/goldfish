@@ -74,6 +74,8 @@ Player.prototype.die = function() {
 }
 
 Player.prototype.handleEvent = function(e) {
+	if (e.ctrlKey || e.altKey) { return; }
+
 	window.removeEventListener("keydown", this);
 	Game.text.clear();
 	var code = e.keyCode;
