@@ -6,5 +6,5 @@ Goldfish
 Development log
 ---------------
   - Sunday evening: base files, level shape generation, fov
-  - Monday: stats, status, oxygen
+  - Monday: stats, status, oxygen, cells
   
