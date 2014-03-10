@@ -1,0 +1,4 @@
+var Rules = {
+	SUBMERGED: 2,
+	SUFFOCATE_CHANCE: 0.8
+}

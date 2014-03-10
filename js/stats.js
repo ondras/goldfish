@@ -12,12 +12,12 @@ Stats.hp = {
 }
 
 Stats.maxo2 = {
-	def: 20
+	def: 20,
 }
 
 Stats.o2 = {
 	def: Stats.maxo2.def,
-	label: "O2"
+	label: "O₂"
 }
 
 Stats.speed = {

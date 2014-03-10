@@ -1,6 +1,6 @@
 var Game = {
 	TEXT_HEIGHT: 3,
-	STATUS_HEIGHT: 2,
+	STATUS_HEIGHT: 3,
 	MAP_SIZE: new XY(90, 30),
 
 	scheduler: null,
@@ -40,7 +40,7 @@ var Game = {
 				this.textBuffer.configure({
 					display: this.display,
 					position: new XY(0, 0),
-					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT)
+					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
 				});
 				this.textBuffer.clear();
 

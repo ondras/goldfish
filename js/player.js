@@ -6,6 +6,7 @@ var Player = function() {
 	
 	this._stats.o2 = 10;
 	this._stats.maxo2 = 20;
+	this._submerged = 0;
 
 	this._promise = null;
 	
@@ -43,6 +44,18 @@ Player.prototype.getStat = function(name, value) {
 
 	/* FIXME items */
 	return base;
+}
+
+Player.prototype.setPosition = function(xy, level) {
+	if (level instanceof Level.Overview) {
+		this._submerged = 0;
+		this.setStat("o2", this.getStat("maxo2"));
+	} else if (level instanceof Level.Cavern) {
+		this._submerged++;
+		if (this._submerged >= Rules.SUBMERGED) { this._useO2(); }
+	}
+
+	Being.prototype.setPosition.call(this, xy, level);
 }
 
 Player.prototype.act = function() {
@@ -117,4 +130,15 @@ Player.prototype.computeFOV = function() {
 
 Player.prototype._listen = function(e) {
 	window.addEventListener("keydown", this);
+}
+
+Player.prototype._useO2 = function() {
+	var current = this.getStat("o2");
+	if (current) {
+		this.adjustStat("o2", -1)
+		this._submerged = 0;
+	} else if (ROT.RNG.getUniform() > Rules.SUFFOCATE_CHANCE) {
+		/* FIXME text */
+		this.damage(1);
+	}
 }

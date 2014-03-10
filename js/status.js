@@ -1,6 +1,7 @@
 var Status = function(display) {
+	/* FIXME colors! */
 	this._display = display;
-	this._offset = Game.TEXT_HEIGHT + Game.MAP_SIZE.y;
+	this._offset = Game.TEXT_HEIGHT + Game.MAP_SIZE.y + 1;
 }
 
 Status.prototype.update = function() {
@@ -12,24 +13,24 @@ Status.prototype.update = function() {
 
 	/* second column */
 	x = 13;
-	this._label(x, 0, "Attack");
+	this._label(x, 0, Stats.attack.label);
 	this.updatePart("attack");
-	this._label(x, 1, "Defense");
+	this._label(x, 1, Stats.defense.label);
 	this.updatePart("defense");
 
 
 	/* third column */
 	x = 26;
-	this._label(x, 0, "Sight");
+	this._label(x, 0, Stats.sight.label);
 	this.updatePart("sight");
-	this._label(x, 1, "Speed");
+	this._label(x, 1, Stats.speed.label);
 	this.updatePart("speed");
 
 	/* fourth column */
 	x = 37;
-	this._label(x, 0, "HP");
+	this._label(x, 0, Stats.hp.label);
 	this.updatePart("hp");
-	this._label(x, 1, "O2");
+	this._label(x, 1, Stats.o2.label);
 	this.updatePart("o2");
 }
 

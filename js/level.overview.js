@@ -54,6 +54,22 @@ Level.Overview.prototype._createWalls = function() {
 	map.create(function(x, y, alive) {
 		if (alive) { return; }
 		var xy = new XY(x, y);
-		cells[xy] = Cell.wall;
+		cells[xy] = Cell.grass;
 	});
+
+	this._createShore();
+}
+
+Level.Overview.prototype._createShore = function() {
+	for (var id in this._cells) {
+		var xy = XY.fromString(id);
+
+		if (!xy.x || !xy.y || xy.x+1 == Game.MAP_SIZE.x || xy.y+1 == Game.MAP_SIZE.y) { continue; }
+
+		var l = !(new XY(xy.x-1, xy.y) in this._cells);
+		var r = !(new XY(xy.x+1, xy.y) in this._cells);
+		var t = !(new XY(xy.x, xy.y-1) in this._cells);
+		var b = !(new XY(xy.x, xy.y+1) in this._cells);
+		if (l || r || t || b) { this._cells[id] = Cell.shore; }
+	}
 }
