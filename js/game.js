@@ -1,4 +1,5 @@
-ROT.RNG.setSeed(1394485396871);
+// FIXME
+//ROT.RNG.setSeed(1394485396871);
 
 var Game = {
 	TEXT_HEIGHT: 3,
@@ -27,42 +28,7 @@ var Game = {
 			
 			case "load":
 				window.removeEventListener("load", this);
-
-				this.scheduler = new ROT.Scheduler.Speed();
-				this._engine = new ROT.Engine(this.scheduler);
-				
-				var options = {
-					width: this.MAP_SIZE.x,
-					height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
-					fontFamily: "droid sans mono",
-					spacing: 1,
-					fg: "#999"
-				}
-				this.display = new ROT.Display(options);
-
-				this.status = new Status(this.display);
-
-				this.text = new TextBuffer(this.display);
-				this.text.configure({
-					display: this.display,
-					position: new XY(0, 0),
-					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
-				});
-				this.text.clear();
-
-				document.body.appendChild(this.display.getContainer());
-				window.addEventListener("resize", this);
-				this._resize();
-
-				this.player = new Player();
-
-				/* FIXME build a level and position a player */
-				var overview = new Level.Overview();
-				var level = new Level.Cavern(overview, new XY(50, 15)); /* FIXME */
-				var size = level.getSize();
-				this.switchLevel(level, level.getEntrance());
-
-				this._engine.start();
+				setTimeout(this._start.bind(this), 100); /* async load font */
 			break;
 		}
 	},
@@ -88,6 +54,44 @@ var Game = {
 		var node = this.display.getContainer();
 		node.style.left = Math.round((w-node.offsetWidth)/2) + "px";
 		node.style.top = Math.round((h-node.offsetHeight)/2) + "px";
+	},
+	
+	_start: function() {
+		this.scheduler = new ROT.Scheduler.Speed();
+		this._engine = new ROT.Engine(this.scheduler);
+		
+		var options = {
+			width: this.MAP_SIZE.x,
+			height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
+			fontFamily: "droid sans mono",
+			spacing: 1,
+			fg: "#999"
+		}
+		this.display = new ROT.Display(options);
+
+		this.status = new Status(this.display);
+
+		this.text = new TextBuffer(this.display);
+		this.text.configure({
+			display: this.display,
+			position: new XY(0, 0),
+			size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
+		});
+		this.text.clear();
+
+		document.body.appendChild(this.display.getContainer());
+		window.addEventListener("resize", this);
+		this._resize();
+
+		this.player = new Player();
+
+		/* FIXME build a level and position a player */
+		var overview = new Level.Overview();
+		var level = new Level.Cavern(overview, new XY(50, 15)); /* FIXME */
+		var size = level.getSize();
+		this.switchLevel(level, level.getEntrance());
+
+		this._engine.start();
 	}
 }
 
