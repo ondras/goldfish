@@ -63,9 +63,6 @@ Player.prototype.act = function() {
 	Game.status.updatePart("turns");
 	this._promise = new Promise();
 	
-	this._describe();
-	Game.text.flush();
-	
 	this._listen();
 	
 	return this._promise;
@@ -78,6 +75,7 @@ Player.prototype.die = function() {
 
 Player.prototype.handleEvent = function(e) {
 	window.removeEventListener("keydown", this);
+	Game.text.clear();
 	var code = e.keyCode;
 
 	if (code in this._keys) {
@@ -86,12 +84,12 @@ Player.prototype.handleEvent = function(e) {
 		var xy = this._xy.plus(new XY(dir[0], dir[1]));
 		var being = this._level.getBeingAt(xy);
 		if (being) { /* attack */
-			Game.text.clear();
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
+			var cell = this._level.getCellAt(xy);
+			if (cell.describe) { Game.text.write("You bump into a " + cell.describe() + "."); }			
 			return this._listen();
 		} else { /* movement */
-			Game.text.clear();
 			this._level.setBeing(this, xy);
 		}
 
@@ -125,6 +123,7 @@ Player.prototype.handleEvent = function(e) {
 		break;
 		
 		default: /* unrecognized key */
+			Game.text.write("(An unknown key was pressed.)");
 			return this._listen();
 		break;
 	}
@@ -147,6 +146,7 @@ Player.prototype.computeFOV = function() {
 }
 
 Player.prototype._listen = function(e) {
+	this._describe();
 	window.addEventListener("keydown", this);
 }
 
@@ -168,10 +168,12 @@ Player.prototype._useO2 = function() {
 Player.prototype._describe = function() {
 	var cell = this._level.getCellAt(this._xy);
 	if (cell.describe) {
-		Game.text.write("You see " + cell.describe());
+		Game.text.write("You see " + cell.describe() + ".");
 	}
 	
 	var item = this._level.getItemAt(this._xy);
 	if (item) { 
 	}
+
+	Game.text.flush();
 }

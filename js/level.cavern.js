@@ -173,6 +173,17 @@ Level.Cavern.prototype._createCorner = function(left, top) {
 
 Level.Cavern.prototype._createItems = function() {
 	this._createSeaweed();
+
+	var min = Rules.BUBBLE_COUNT[0];
+	var max = Rules.BUBBLE_COUNT[1];
+	var bubbles = min + Math.floor(ROT.RNG.getUniform() * (max-min));
+	while (bubbles--) {
+		var xy = this._findFree();
+		delete this._free[xy];
+		var bubble = new Cell.Bubble();
+		bubble.setPosition(xy, this);
+		this._cells[xy] = bubble;
+	}
 }
 
 Level.Cavern.prototype._createSeaweed = function() {

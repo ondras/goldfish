@@ -15,8 +15,9 @@ Cell.Seaweed.prototype.enter = function(being) {
 	var hp = being.getStat("hp");
 	var maxhp = being.getStat("maxhp");
 	
-	if (hp + Rules.SEAWEED_HEAL <= maxhp) {
-		being.adjustStat("hp", Rules.SEAWEED_HEAL);
+	if (hp < maxhp) {
+		being.adjustStat("hp", Math.min(Rules.SEAWEED_HEAL, maxhp-hp));
+		
 		if (being == Game.player) { Game.text.write("You heal yourself a bit by eating some seaweed."); }
 		this._level.removeCell(this._xy);
 	}

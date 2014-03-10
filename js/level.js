@@ -135,3 +135,7 @@ Level.prototype._findFreeClosestTo = function(xy) {
 	
 	return best;
 }
+
+Level.prototype._findFree = function() {
+	return this._free[Object.keys(this._free).random()];
+}
