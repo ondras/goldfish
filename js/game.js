@@ -71,7 +71,7 @@ var Game = {
 			width: this.MAP_SIZE.x,
 			height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
 			fontFamily: "droid sans mono",
-			spacing: 1,
+			spacing: 1.1,
 			fg: "#999"
 		}
 		this.display = new ROT.Display(options);

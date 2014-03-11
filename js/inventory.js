@@ -50,6 +50,7 @@ Inventory.prototype._draw = function() {
 
 	this._drawFish();
 	this._drawLabels();
+	this._drawNumbers();
 	this._drawSlots();
 }
 
@@ -62,25 +63,59 @@ Inventory.prototype._drawFish = function() {
 	this._offset.x = Math.round((Game.MAP_SIZE.x - width)/2);
 	this._offset.y = Game.TEXT_HEIGHT + Math.round((Game.MAP_SIZE.y - height)/2);
 
+	var color = ROT.Color.interpolate(Game.GOLD, [0, 0, 0], 0.3);
+	var fg = ROT.Color.toRGB(color);
 	fish.forEach(function(line, index) {
 		for (var i=0;i<line.length;i++) {
 			var ch = line.charAt(i);
 			if (ch.match(/\s/)) { continue; }
-			Game.display.draw(this._offset.x + i, this._offset.y + index, ch);
+			Game.display.draw(this._offset.x + i, this._offset.y + index, ch, fg);
 		}
 	}, this);
 }
 
 Inventory.prototype._drawLabels = function() {
+	var fg = "#666";
+	var offset = this._offset;
+	var d = function(x, y, text) {
+		Game.display.drawText(x+offset.x, y+offset.y, "%c{"+fg+"}"+text); 
+	}
+
+	d(29, 10, "\\  /");
+	d(28, 11, "Scales");
+	d(29, 12, "/  \\");
+
+	d(31, 1, new Array(21).join("─") + "   Dorsal fin");
+	
+	d(54, 4, "Tail fin ─┐");
+	d(64, 5, "│");
+	d(64, 6, "│");
+	d(64, 7, "│");
+
+	d(31, 21, new Array(14).join("─") + "   Pelvic fin");
+	/*
+	d(6, 14, new Array(5).join("─") + "┘");
+	d(10, 13, "│");
+	d(9, 12, "Jaws");
+	*/
+
+	d(0, 15, "│");
+	d(0, 16, "│");
+	d(0, 17, "│");
+	d(0, 18, "│");
+	d(0, 19, "└" + new Array(4).join("─") + "   Jaws");
+}
+
+Inventory.prototype._drawNumbers = function() {
 	[
 		new XY(28, 13),
 		new XY(33, 13),
 		new XY(28, 9),
 		new XY(33, 9),
 		new XY(52, 1),
-		new XY(52, 3),
+		new XY(52, 4),
 		new XY(45, 21),
-		new XY(7, 12)
+		new XY(5, 19)
 	].forEach(function(xy, index) {
 		Game.display.draw(this._offset.x + xy.x, this._offset.y + xy.y, (index+1), "#fff");
 	}, this);

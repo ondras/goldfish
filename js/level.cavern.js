@@ -186,8 +186,7 @@ Level.Cavern.prototype._createItems = function() {
 		this._cells[xy] = bubble;
 	}
 
-	var item = new Item();
-	item.getVisual().fg = [255, 255, 255];
+	var item = new Item.Scale(2).setStat("maxo2", 5);
 	this.setItem(item, new XY(this._entrance.x+1, this._entrance.y+1));
 }
 

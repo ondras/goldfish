@@ -3,7 +3,9 @@ var Stats = {};
 Stats.all = ["hp", "maxhp", "o2", "maxo2", "speed", "sight", "attack", "defense"];
 
 Stats.maxhp = {
-	def: 2
+	def: 2,
+	short: "HP",
+	label: "Vitality"
 }
 
 Stats.hp = {
@@ -13,6 +15,8 @@ Stats.hp = {
 
 Stats.maxo2 = {
 	def: 20,
+	short: "O₂",
+	label: "Breathing"
 }
 
 Stats.o2 = {
@@ -22,20 +26,24 @@ Stats.o2 = {
 
 Stats.speed = {
 	def: 20,
-	label: "Speed"
+	label: "Speed",
+	short: "SPD"
 }
 
 Stats.sight = {
 	def: 7,
-	label: "Sight"
+	label: "Sight",
+	short: "SEE"
 }
 
 Stats.attack = {
 	def: 10,
-	label: "Attack"
+	label: "Attack",
+	short: "ATK"
 }
 
 Stats.defense = {
 	def: 10,
-	label: "Defense"
+	label: "Defense",
+	short: "DEF"
 }

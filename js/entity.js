@@ -31,5 +31,9 @@ Entity.prototype.the = function() {
     return "the " + this._visual.description;
 }
 
+Entity.prototype.toString = function() {
+    return this._visual.description;
+}
+
 String.format.map.a = "a";
 String.format.map.the = "the";

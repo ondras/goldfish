@@ -53,7 +53,10 @@ Player.prototype.setStat = function(name, value) {
 
 Player.prototype.getStat = function(name) {
 	var value = Being.prototype.getStat.call(this, name);
-	this._slots.forEach(function(slot) { value += slot.getItem().getStat(name); });
+	this._slots.forEach(function(slot) {
+		var item = slot.getItem();
+		if (item.getStatName() == name) { value += item.getStatValue(); }
+	});
 	return value;
 }
 
@@ -143,7 +146,7 @@ Player.prototype.handleEvent = function(e) {
 		break;
 		
 		default: /* unrecognized key */
-			Game.text.write("(An unknown key was pressed.)");
+			Game.text.write("(an unknown key was pressed)");
 			this._listen();
 		break;
 	}
@@ -205,11 +208,10 @@ Player.prototype._pick = function(item) {
 }
 
 Player.prototype._initSlots = function() {
-
 	for (var i=0;i<4;i++) {
 		var slot = new Slot.Scale(i);
 		this._slots.push(slot);
-		var item = new Item.Scale(2);
+		var item = new Item.Scale(0).setStat("");
 		this._items.push(item);
 		slot.setItem(item);
 	}
@@ -217,14 +219,14 @@ Player.prototype._initSlots = function() {
 	for (var i=0;i<3;i++) {
 		var slot = new Slot.Fin(i);
 		this._slots.push(slot);
-		var item = new Item.Fin(2);
+		var item = new Item.Fin(0).setStat("");
 		this._items.push(item);
 		slot.setItem(item);
 	}
 
 	var slot = new Slot.Jaws();
 	this._slots.push(slot);
-	var item = new Item.Jaws(2);
+	var item = new Item.Jaws(0).setStat("");
 	this._items.push(item);
 	slot.setItem(item);
 }
