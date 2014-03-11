@@ -1,11 +1,13 @@
 var Stats = {};
 
 Stats.all = ["hp", "maxhp", "o2", "maxo2", "speed", "sight", "attack", "defense"];
+Stats.avail = ["maxhp", "maxo2", "speed", "sight", "attack", "defense"];
 
 Stats.maxhp = {
-	def: 2,
+	def: 20, /* shall be no more than ~55 in order to fit a 100-width */
 	short: "HP",
-	label: "Vitality"
+	label: "Vitality",
+	random: [1, [2, 3], [3, 4], [4, 5]]
 }
 
 Stats.hp = {
@@ -16,7 +18,8 @@ Stats.hp = {
 Stats.maxo2 = {
 	def: 20,
 	short: "O₂",
-	label: "Breathing"
+	label: "Breathing",
+	random: Stats.maxhp.random
 }
 
 Stats.o2 = {
@@ -25,25 +28,29 @@ Stats.o2 = {
 }
 
 Stats.speed = {
-	def: 20,
+	def: 50,
 	label: "Speed",
-	short: "SPD"
+	short: "SPD",
+	random: [[2, 5], [4, 8], [7, 10], [9, 15]]
 }
 
 Stats.sight = {
 	def: 7,
 	label: "Sight",
-	short: "SEE"
+	short: "SEE",
+	random: [1, 2, 3, 4]
 }
 
 Stats.attack = {
 	def: 10,
 	label: "Attack",
-	short: "ATK"
+	short: "ATK",
+	random: [1, [2, 3], [3, 4], [4, 5]]
 }
 
 Stats.defense = {
 	def: 10,
 	label: "Defense",
-	short: "DEF"
+	short: "DEF",
+	random: Stats.attack.random
 }

@@ -1,7 +1,7 @@
 var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 3,
-	MAP_SIZE: new XY(90, 30),
+	MAP_SIZE: new XY(100, 30),
 	GOLD: [255, 220, 120],
 	FISH: "",
 

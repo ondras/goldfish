@@ -177,7 +177,7 @@ Level.Cavern.prototype._createItems = function() {
 
 	var min = Rules.BUBBLE_COUNT[0];
 	var max = Rules.BUBBLE_COUNT[1];
-	var bubbles = min + Math.floor(ROT.RNG.getUniform() * (max-min));
+	var bubbles = min + Math.floor(ROT.RNG.getUniform() * (max-min+1));
 	while (bubbles--) {
 		var xy = this._findFree();
 		delete this._free[xy];
@@ -186,7 +186,7 @@ Level.Cavern.prototype._createItems = function() {
 		this._cells[xy] = bubble;
 	}
 
-	var item = new Item.Scale(2).setStat("maxo2", 5);
+	var item = new Item.Scale(3);
 	this.setItem(item, new XY(this._entrance.x+1, this._entrance.y+1));
 }
 
@@ -209,7 +209,7 @@ Level.Cavern.prototype._createSeaweed = function() {
 Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
 	var min = Rules.SEAWEED_LENGTH[0];
 	var max = Rules.SEAWEED_LENGTH[1];
-	var limit = min + Math.floor(ROT.RNG.getUniform()*(max-min));
+	var limit = min + Math.floor(ROT.RNG.getUniform()*(max-min+1));
 
 	while (xy in this._free && limit) {
 		limit--;

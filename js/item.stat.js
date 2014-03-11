@@ -25,8 +25,17 @@ Item.Stat.prototype.setStat = function(stat, value) {
 }
 
 Item.Stat.prototype.setRandomStat = function() {
-	var value = 0;
-	this.setStat("attack", 0);
+	var stat = Stats.avail.random();
+	stat = "attack";
+	var values = Stats[stat].random[this._type];
+	
+	if (values instanceof Array) {
+		var value = values[0] + Math.floor(ROT.RNG.getUniform() * (values[1]-values[0]+1));
+	} else {
+		var value = values;
+	}
+
+	this.setStat(stat, value);
 	return this;
 }
 

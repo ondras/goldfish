@@ -183,6 +183,7 @@ Player.prototype._useO2 = function() {
 		this.adjustStat("o2", -1)
 		this._submerged = 0;
 	} else if (ROT.RNG.getUniform() > Rules.SUFFOCATE_CHANCE) {
+		Game.text.write("You are suffocating!");
 		/* FIXME text */
 		this.damage(1);
 	}
