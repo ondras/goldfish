@@ -6,8 +6,7 @@ var Status = function(display) {
 Status.prototype.update = function() {
 	/* first column */
 	var x = 0;
-	var gold = Game.player.getVisual().fg;
-	this._display.drawText(x, this._offset, "%c{" + ROT.Color.toRGB(gold) + "}<*)))><");
+	this._display.drawText(x, this._offset, "%c{" + ROT.Color.toRGB(Game.GOLD) + "}<*)))><");
 	this._label(x, 1, "Turns");
 	this.updatePart("turns");
 

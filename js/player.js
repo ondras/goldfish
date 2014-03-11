@@ -1,5 +1,5 @@
 var Player = function() {
-	Being.call(this, {ch:"@", fg:[255, 220, 120]});
+	Being.call(this, {ch:"@", fg:Game.GOLD});
 	
 	this._stats.hp = 15;
 	this._stats.maxhp = 20;
@@ -33,6 +33,8 @@ var Player = function() {
 	this._keys[ROT.VK_NUMPAD4] = 6;
 	this._keys[ROT.VK_Y] = 7;
 	this._keys[ROT.VK_NUMPAD7] = 7;
+
+	this._initSlots();
 }
 Player.extend(Being);
 
@@ -49,11 +51,10 @@ Player.prototype.setStat = function(name, value) {
 	Game.status.update();
 }
 
-Player.prototype.getStat = function(name, value) {
-	var base = Being.prototype.getStat.call(this, name, value);
-
-	/* FIXME items */
-	return base;
+Player.prototype.getStat = function(name) {
+	var value = Being.prototype.getStat.call(this, name);
+	this._slots.forEach(function(slot) { value += slot.getItem().getStat(name); });
+	return value;
 }
 
 Player.prototype.setPosition = function(xy, level) {
@@ -112,6 +113,8 @@ Player.prototype.handleEvent = function(e) {
 		case ROT.VK_I:
 			var inventory = new Inventory(this);
 			inventory.show().then(function() {
+				Game.display.clear(); /* clear all */
+				Game.status.update(); /* draw status */
 				this._level.drawMemory();
 				this._level.setBeing(this, this._xy);
 				this._listen();
@@ -199,4 +202,29 @@ Player.prototype._pick = function(item) {
 	Game.text.write("You pick up %a.".format(item));
 	this._items.push(item);
 	this._level.setItem(null, this._xy);
+}
+
+Player.prototype._initSlots = function() {
+
+	for (var i=0;i<4;i++) {
+		var slot = new Slot.Scale(i);
+		this._slots.push(slot);
+		var item = new Item.Scale(2);
+		this._items.push(item);
+		slot.setItem(item);
+	}
+
+	for (var i=0;i<3;i++) {
+		var slot = new Slot.Fin(i);
+		this._slots.push(slot);
+		var item = new Item.Fin(2);
+		this._items.push(item);
+		slot.setItem(item);
+	}
+
+	var slot = new Slot.Jaws();
+	this._slots.push(slot);
+	var item = new Item.Jaws(2);
+	this._items.push(item);
+	slot.setItem(item);
 }

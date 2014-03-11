@@ -2,6 +2,8 @@ var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 3,
 	MAP_SIZE: new XY(90, 30),
+	GOLD: [255, 220, 120],
+	FISH: "",
 
 	scheduler: null,
 	player: null,
@@ -15,6 +17,12 @@ var Game = {
 	
 	init: function() {
 		window.addEventListener("load", this);
+		var xhr = new XMLHttpRequest();
+		xhr.open("get", "fish.txt", true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) { Game.FISH = xhr.responseText; }
+		}
+		xhr.send();
 	},
 
 	handleEvent: function(e) {
