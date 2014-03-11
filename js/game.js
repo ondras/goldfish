@@ -1,6 +1,3 @@
-// FIXME
-//ROT.RNG.setSeed(1394485396871);
-
 var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 3,

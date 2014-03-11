@@ -108,15 +108,19 @@ Level.prototype._createFree = function() {
 	}
 
 	/* flood fill free cells */
-	var scan = function(xy) {
-		free[xy] = xy;
+	free[center] = center;
+	var queue = [center];
+	var process = function() {
+		var xy = queue.shift();
+
 		dirs.forEach(function(dir) {
 			var xy2 = new XY(xy.x + dir[0], xy.y + dir[1]);
 			if (xy2 in cells || xy2 in free) { return; }
-			scan(xy2);
+			free[xy2] = xy2;
+			queue.push(xy2);
 		});
 	}
-	scan(center);
+	while (queue.length) { process();  }
 }
 
 Level.prototype._getBackgroundColor = function() {

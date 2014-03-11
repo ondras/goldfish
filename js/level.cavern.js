@@ -184,6 +184,10 @@ Level.Cavern.prototype._createItems = function() {
 		bubble.setPosition(xy, this);
 		this._cells[xy] = bubble;
 	}
+
+	var item = new Item();
+	item.getVisual().fg = [255, 255, 255];
+	this._items[new XY(this._entrance.x+1, this._entrance.y+1)] = item;
 }
 
 Level.Cavern.prototype._createSeaweed = function() {

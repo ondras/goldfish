@@ -1,11 +1,11 @@
 Cell.Staircase = function(up) {
-	Cell.call(this, {
-		ch: up ? "<" : ">",
-		fg: [100, 100, 200]
-	}, false, "a tunnel leading "  + (up ? "to the surface" : "to unknown depths"));
-	
 	this._up = up;
-	this._description 
+
+	Cell.call(this, {
+		ch: this._up ? "<" : ">",
+		fg: [100, 100, 200],
+		description: "a tunnel leading "  + (this._up ? "to the surface" : "to unknown depths")
+	}, false);
 	
 	this._target = {
 		level: null,

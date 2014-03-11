@@ -88,8 +88,8 @@ Player.prototype.handleEvent = function(e) {
 		if (being) { /* attack */
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
-			var cell = this._level.getCellAt(xy);
-			if (cell.describe) { Game.text.write("You bump into a " + cell.describe() + "."); }			
+			var d = this._level.getCellAt(xy).getVisual().description;
+			if (d) { Game.text.write("You bump into a " + d + "."); }			
 			return this._listen();
 		} else { /* movement */
 			this._level.setBeing(this, xy);
@@ -168,13 +168,15 @@ Player.prototype._useO2 = function() {
 }
 
 Player.prototype._describe = function() {
-	var cell = this._level.getCellAt(this._xy);
-	if (cell.describe) {
-		Game.text.write("You see " + cell.describe() + ".");
+	var d = this._level.getCellAt(this._xy).getVisual().description;
+	if (d) {
+		Game.text.write("You see " + d + ".");
 	}
 	
 	var item = this._level.getItemAt(this._xy);
-	if (item) { 
+	if (item) {
+		var d = item.getVisual().description;
+		Game.text.write("A " + d + " is lying here.");
 	}
 
 	Game.text.flush();
