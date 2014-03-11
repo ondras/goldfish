@@ -7,4 +7,4 @@ Development log
 ---------------
   - Sunday evening: base files, level shape generation, fov
   - Monday: stats, status, oxygen, cells
-  
+  - Tuesday: items, slots, inventory  
