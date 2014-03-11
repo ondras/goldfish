@@ -1,6 +1,7 @@
-Inventory.Slot = function(slot, items) {
+Inventory.Slot = function(slot, being) {
 	this._slot = slot;
-	this._items = this._filterItems(items);
+	this._being = being;
+	this._items = this._filterItems(this._being.getItems());
 	this._promise = new Promise();
 }
 
@@ -52,10 +53,33 @@ Inventory.Slot.prototype._draw = function() {
 
 	Game.text.write("Press [%c{#fff}" + letters + "%c{}] to select an item. Press %c{#fff}Escape%c{} or %c{#fff}Z%c{} to return back to the inventory.");
 	Game.text.flush();
+
+	this._items.forEach(this._drawItem, this);
 }
 
 Inventory.Slot.prototype._filterItems = function(items) {
-	return items.filter(function(item) {
-		return this._slot.accepts(items);
-	}, this);
+	return items.filter(this._slot.accepts, this._slot);
+}
+
+Inventory.Slot.prototype._drawItem = function(item, index) {
+	var letter = String.fromCharCode("A".charCodeAt(0) + index);
+	var y = index + 3;
+	var x = 10;
+	var color = "#fff";
+
+	if (this._isItemUsed(item)) {
+		color = null;
+		Game.display.drawText(x-7, y, "(used)");
+
+	}
+
+	Game.display.draw(x, y, letter, color);
+	x += 2;
+	Game.display.drawText(x, y, item.getVisual().description);
+}
+
+Inventory.Slot.prototype._isItemUsed = function(item) {
+	return this._being.getSlots().some(function(slot) {
+		return (slot.getItem() == item);
+	});
 }

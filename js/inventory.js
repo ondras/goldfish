@@ -32,7 +32,7 @@ Inventory.prototype.handleEvent = function(e) {
 			this._hide();
 
 			var slot = this._being.getSlots()[index];
-			new Inventory.Slot(slot, this._being.getItems()).show().then(this.show.bind(this));
+			new Inventory.Slot(slot, this._being).show().then(this.show.bind(this));
 		break;
 	}
 }
