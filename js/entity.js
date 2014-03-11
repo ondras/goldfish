@@ -21,3 +21,15 @@ Entity.prototype.setPosition = function(xy, level) {
 	this._level = level;
 	return this;
 }
+
+Entity.prototype.a = function() {
+    var first = this._visual.description.charAt(0);
+    return (first.match(/[aeiouy]/i) ? "an" : "a") + " " + this._visual.description;
+}
+
+Entity.prototype.the = function() {
+    return "the " + this._visual.description;
+}
+
+String.format.map.a = "a";
+String.format.map.the = "the";

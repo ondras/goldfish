@@ -79,6 +79,13 @@ Level.prototype.setBeing = function(being, xy) {
 	if (Game.level == this) { this.draw(xy); }
 }
 
+Level.prototype.setItem = function(item, xy) {
+	delete this._items[xy];
+	if (item) { this._items[xy] = item; }
+
+	if (Game.level == this) { this.draw(xy); }
+	return this;
+}
 
 Level.prototype._create = function() {
 	this._createWalls();

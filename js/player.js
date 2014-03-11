@@ -9,6 +9,7 @@ var Player = function() {
 	this._submerged = 0;
 
 	this._promise = null;
+	this._items = [];
 	
 	this._keys = {};
 	this._keys[ROT.VK_K] = 0;
@@ -89,7 +90,7 @@ Player.prototype.handleEvent = function(e) {
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
 			var d = this._level.getCellAt(xy).getVisual().description;
-			if (d) { Game.text.write("You bump into a " + d + "."); }			
+			if (d) { Game.text.write("You bump into %a.".format(this._level.getCellAt(xy))); }
 			return this._listen();
 		} else { /* movement */
 			this._level.setBeing(this, xy);
@@ -168,16 +169,20 @@ Player.prototype._useO2 = function() {
 }
 
 Player.prototype._describe = function() {
-	var d = this._level.getCellAt(this._xy).getVisual().description;
-	if (d) {
-		Game.text.write("You see " + d + ".");
+	var cell = this._level.getCellAt(this._xy);
+	
+	if (cell.getVisual().description) {
+		Game.text.write("You see %a.".format(cell));
 	}
 	
 	var item = this._level.getItemAt(this._xy);
-	if (item) {
-		var d = item.getVisual().description;
-		Game.text.write("A " + d + " is lying here.");
-	}
+	if (item) { Game.text.write("%A is lying here.".format(item)); }
 
 	Game.text.flush();
+}
+
+Player.prototype._pick = function(item) {
+	Game.text.write("You pick up %a.".format(item));
+	this._items.push(item);
+	this._level.setItem(null, this._xy);
 }

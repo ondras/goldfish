@@ -32,7 +32,9 @@ var Game = {
 
 	over: function() {
 		this._engine.lock();
-		/* FIXME show something */
+		this.text.write("You die... %c{#666}(reload the page to start a new game)");
+		this.text.flush();
+		/* FIXME outro? */
 	},
 
 	switchLevel: function(level, xy) {

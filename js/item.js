@@ -1,5 +1,5 @@
 var Item = function() {
-	Entity.call(this, {ch:"?"});
+	Entity.call(this, {ch:"?", description:""});
 
 	this._stats = {};
 	Stats.all.forEach(function(name) {
