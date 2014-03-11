@@ -17,8 +17,9 @@ Level.Cavern = function(overview, xy) {
 Level.Cavern.extend(Level);
 
 Level.Cavern.prototype.drawMemory = function() {
+	this._fov = {};
 	for (var xy in this._memory) {
-		this._drawWeak(xy, this._memory[xy]);
+		this._drawWeak(XY.fromString(xy), this._memory[xy]);
 	}
 }
 

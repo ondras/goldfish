@@ -10,6 +10,7 @@ var Player = function() {
 
 	this._promise = null;
 	this._items = [];
+	this._slots = [];
 	
 	this._keys = {};
 	this._keys[ROT.VK_K] = 0;
@@ -34,6 +35,14 @@ var Player = function() {
 	this._keys[ROT.VK_NUMPAD7] = 7;
 }
 Player.extend(Being);
+
+Player.prototype.getItems = function() {
+	return this._items;
+}
+
+Player.prototype.getSlots = function() {
+	return this._slots;
+}
 
 Player.prototype.setStat = function(name, value) {
 	Being.prototype.setStat.call(this, name, value);
@@ -101,7 +110,12 @@ Player.prototype.handleEvent = function(e) {
 
 	switch (e.keyCode) {
 		case ROT.VK_I:
-			/* FIXME inventory */
+			var inventory = new Inventory(this);
+			inventory.show().then(function() {
+				this._level.drawMemory();
+				this._level.setBeing(this, this._xy);
+				this._listen();
+			}.bind(this));
 		break;
 
 		case ROT.VK_Q:
@@ -127,7 +141,7 @@ Player.prototype.handleEvent = function(e) {
 		
 		default: /* unrecognized key */
 			Game.text.write("(An unknown key was pressed.)");
-			return this._listen();
+			this._listen();
 		break;
 	}
 	
