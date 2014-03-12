@@ -11,7 +11,6 @@ var Game = {
 	display: null,
 	text: null,
 	status: null,
-	turns: -1,
 
 	engine: null,
 	
@@ -42,7 +41,6 @@ var Game = {
 		this.engine.lock();
 		this.text.write("You die... %c{#666}(reload the page to start a new game)");
 		this.text.flush();
-		/* FIXME outro? */
 	},
 
 	switchLevel: function(level, xy) {
@@ -72,7 +70,7 @@ var Game = {
 			height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
 			fontFamily: "droid sans mono",
 			spacing: 1.1,
-			fg: "#999"
+			fg: "#aaa"
 		}
 		this.display = new ROT.Display(options);
 
@@ -96,6 +94,7 @@ var Game = {
 		var overview = new Level.Overview();
 		var level = new Level.Cavern(overview, new XY(50, 15)); /* FIXME */
 		var center = overview.getCenter();
+//		this.switchLevel(level, level.getEntrance());
 		this.switchLevel(overview, center);
 
 		this.engine.start();

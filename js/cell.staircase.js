@@ -5,7 +5,7 @@ Cell.Staircase = function(danger) {
 	Cell.call(this, {
 		ch: danger ? ">" : "<",
 		fg: colors[danger],
-		description: "a tunnel leading to "  + labels[danger]
+		description: "tunnel leading to "  + labels[danger]
 	}, false);
 	
 	this._target = {
@@ -21,6 +21,7 @@ Cell.Staircase.prototype.setTarget = function(level, xy) {
 }
 
 Cell.Staircase.prototype.activate = function(being) {
+	Progress.staircasesEntered++;
 	if (!this._target.xy) { this._target.level(); } /* callback to generate the level */
 	Game.switchLevel(this._target.level, this._target.xy);
 }

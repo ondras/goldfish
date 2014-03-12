@@ -37,7 +37,6 @@ Being.Fisher.prototype.generate = function() {
 	}.bind(this));
 
 	this._level.setCell(staircase, xy);
-	
 	Progress.questsGenerated++;
 }
 
@@ -140,7 +139,7 @@ Being.Fisher.prototype._chat = function(parts) {
 		}
 		
 		Game.text.write(str);
-		if (enter) { Game.text.write("%c{#666}(pres Enter to continue)"); }
+		if (enter) { Game.text.write("%c{#666}(press Enter to continue)"); }
 
 		Game.text.flush();
 	}
@@ -163,7 +162,7 @@ Being.Fisher.prototype._chatGiveQuest = function() {
 		{
 			text: [
 				"Wow, a goldfish! This is going to be a fine meal.",
-				"Well, well, well. What do we have here. A goldish?"
+				"Well, well, well. What do we have here. A goldfish?"
 			].random(),
 			who: "f"
 		},
@@ -212,6 +211,23 @@ Being.Fisher.prototype._chatFinishQuest = function() {
 			who: ""
 		}
 	];
+	
+	Progress.questsFinished++;
+	if (Progress.questsFinished == Rules.QUESTS) { /* Victory! */
+		parts.push({
+			who: "",
+			text: "%c{#fff}Congratulations!%c{} You managed to fulfill all wishes and successfully finish this game. "+
+				 "You are officially the best goldfish ever."
+		});
+		
+		parts.push({
+			who: "",
+			text: "(By the way, you spent %c{#fff}" + Progress.turns + "%c{} game turns; " + 
+				"reload the page to improve your score in another try!)"
+		});
+		Game.engine.lock();
+	}
+	
 	this._chat(parts);
 };
 

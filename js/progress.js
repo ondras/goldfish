@@ -1,7 +1,10 @@
 /** Used for tracking user actions. Simulates story/tutorial. */
 var Progress = {
-	itemsPicked: 0, /* FIXME */
-	staircasesEntered: 0, /* FIXME */
-	inventoryOpened: 0, /* FIXME */
-	questsGenerated: 0
+	threshold: 2, /* how many times do we show help text */
+	itemsPicked: 0,
+	staircasesEntered: 0,
+	inventoryOpened: 0,
+	questsGenerated: 0,
+	questsFinished: 0,
+	turns: -1
 }

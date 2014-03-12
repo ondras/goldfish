@@ -2,6 +2,7 @@ var Inventory = function(being) {
 	this._promise = new Promise();
 	this._being = being;
 	this._offset = new XY();
+	Progress.inventoryOpened++;
 }
 
 Inventory.prototype.show = function() {

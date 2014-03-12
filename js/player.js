@@ -1,11 +1,11 @@
 var Player = function() {
 	Being.call(this, {ch:"@", fg:Game.GOLD});
 	
-	this._stats.hp = 15;
 	this._stats.maxhp = 20;
+	this._stats.hp = this._stats.maxhp;
 	
-	this._stats.o2 = 10;
 	this._stats.maxo2 = 20;
+	this._stats.o2 = this._stats.maxo2;
 	this._submerged = 0;
 
 	this._promise = null;
@@ -103,7 +103,7 @@ Player.prototype.setPosition = function(xy, level) {
 }
 
 Player.prototype.act = function() {
-	Game.turns++;
+	Progress.turns++;
 	Game.status.updatePart("turns");
 	this._promise = new Promise();
 	
@@ -220,18 +220,32 @@ Player.prototype._describe = function() {
 	
 	if (cell.getVisual().description) {
 		Game.text.write("You see %a.".format(cell));
+		
+		if (cell instanceof Cell.Staircase && Progress.staircasesEntered < Progress.threshold) {
+			Game.text.write("%c{#666}(press %c{#fff}Enter%c{#666} to enter it)");
+		}
 	}
 	
 	var item = this._level.getItemAt(this._xy);
-	if (item) { Game.text.write("%A is lying here.".format(item)); }
+	if (item) { 
+		Game.text.write("%A is lying here.".format(item));
+		if (Progress.itemsPicked < Progress.threshold) {
+			Game.text.write("%c{#666}(press %c{#fff}Enter%c{#666} to pick it up)");
+		}
+	}
 
 	Game.text.flush();
 }
 
 Player.prototype._pick = function(item) {
+	Progress.itemsPicked++;
 	Game.text.write("You pick up %a.".format(item));
 	this._items.push(item);
 	this._level.setItem(null, this._xy);
+
+	if (Progress.inventoryOpened < Progress.threshold) {
+		Game.text.write("%c{#666}(press %c{#fff}i%c{#666} to open the inventory)");
+	}
 }
 
 Player.prototype._initSlots = function() {

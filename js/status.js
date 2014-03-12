@@ -38,7 +38,7 @@ Status.prototype.updatePart = function(part) {
 		case "turns":
 			var x = 7, y = 1, len = 5;
 			this._erase(x, y, len);
-			this._number(x + len - 1, y, Game.turns);
+			this._number(x + len - 1, y, Progress.turns);
 		break;
 
 		case "attack":

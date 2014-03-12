@@ -26,7 +26,6 @@ Item.Stat.prototype.setStat = function(stat, value) {
 
 Item.Stat.prototype.setRandomStat = function() {
 	var stat = Stats.avail.random();
-	stat = "attack";
 	var values = Stats[stat].random[this._type];
 	
 	if (values instanceof Array) {

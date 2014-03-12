@@ -9,7 +9,7 @@ Item.Quest.extend(Item);
 Item.Quest.prototype.a = Item.Quest.prototype.toString;
 
 Item.Quest.NORMAL = [
-	"a World peace",
+	"World peace",
 	"an AIDS cure",
 	"a Billion dollar bill",
 	"a Beautiful wife",
@@ -26,7 +26,10 @@ Item.Quest.SILLY = [
 	"a Lifelong vivid.com membership",
 	"the Trident of the Red Rooster",
 	"the Amulet of Yendor",
-	"the One Ring"
+	"the One Ring",
+	"a Scroll of chaos resistance",
+	"an Amulet of life saving",
+	"a Lutefisk"
 ];
 
 Item.Quest.ALL = [];

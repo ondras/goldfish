@@ -49,14 +49,14 @@ Level.Overview.prototype.pickStaircasePosition = function() {
 	if (Progress.questsGenerated > 0) {
 		var avail = [];
 		for (var id in this._free) {
-			if (this._free[id].dist8(xy) < this._size.y/3) { avail.push(this._free[id]); }
+			var dx = Math.abs(this._free[id].x - xy.x);
+			var dy = Math.abs(this._free[id].y - xy.y);
+			if (dx < this._size.x/4 && dy < this._size.y/4) { avail.push(this._free[id]); }
 		}
 		xy = avail.random();
 	}
 	
-	
 	delete this._free[xy];
-	
 	return xy;
 }
 

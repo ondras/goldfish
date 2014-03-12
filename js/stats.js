@@ -42,14 +42,14 @@ Stats.sight = {
 }
 
 Stats.attack = {
-	def: 10,
+	def: 20,
 	label: "Attack",
 	short: "ATK",
 	random: [1, [2, 3], [3, 4], [4, 5]]
 }
 
 Stats.defense = {
-	def: 10,
+	def: 20,
 	label: "Defense",
 	short: "DEF",
 	random: Stats.attack.random
