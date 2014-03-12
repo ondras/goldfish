@@ -1,8 +1,9 @@
 Level.Overview = function() {
+	this._fishers = [];
+
 	Level.call(this);
 
 	this._empty = Cell.water;
-
 }
 Level.Overview.extend(Level);
 
@@ -15,6 +16,14 @@ Level.Overview.prototype.drawMemory = function() {
 			xy.y = j;
 			this.draw(xy);
 		}
+	}
+}
+
+Level.Overview.prototype.activate = function() {
+	Level.prototype.activate.call(this);
+	
+	if (Progress.questsGenerated) {
+		this._fishers.forEach(function(fisher) { fisher.generate(); });
 	}
 }
 
@@ -32,6 +41,23 @@ Level.Overview.prototype.setBeing = function(being, xy) {
 			fisher.interact(being);
 		}
 	}
+}
+
+Level.Overview.prototype.pickStaircasePosition = function() {
+	var xy = this.getCenter();
+
+	if (Progress.questsGenerated > 0) {
+		var avail = [];
+		for (var id in this._free) {
+			if (this._free[id].dist8(xy) < this._size.y/3) { avail.push(this._free[id]); }
+		}
+		xy = avail.random();
+	}
+	
+	
+	delete this._free[xy];
+	
+	return xy;
 }
 
 Level.Overview.prototype._createBeings = function() {
@@ -73,6 +99,7 @@ Level.Overview.prototype._createFisher = function(xy, color) {
 	
 	var fisher = new Being.Fisher(color, delta);
 	this.setBeing(fisher, xy);
+	this._fishers.push(fisher);
 }
 
 Level.Overview.prototype._createWalls = function() {
@@ -108,6 +135,7 @@ Level.Overview.prototype._createWalls = function() {
 	});
 
 	this._createShore();
+	this._createFree();
 }
 
 Level.Overview.prototype._createShore = function() {

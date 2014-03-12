@@ -18,21 +18,25 @@ var Player = function() {
 	this._keys[ROT.VK_UP] = 0;
 	this._keys[ROT.VK_NUMPAD8] = 0;
 	this._keys[ROT.VK_U] = 1;
+	this._keys[ROT.VK_PAGE_UP] = 1;
 	this._keys[ROT.VK_NUMPAD9] = 1;
 	this._keys[ROT.VK_L] = 2;
 	this._keys[ROT.VK_RIGHT] = 2;
 	this._keys[ROT.VK_NUMPAD6] = 2;
 	this._keys[ROT.VK_N] = 3;
+	this._keys[ROT.VK_PAGE_DOWN] = 3;
 	this._keys[ROT.VK_NUMPAD3] = 3;
 	this._keys[ROT.VK_J] = 4;
 	this._keys[ROT.VK_DOWN] = 4;
 	this._keys[ROT.VK_NUMPAD2] = 4;
 	this._keys[ROT.VK_B] = 5;
+	this._keys[ROT.VK_END] = 5;
 	this._keys[ROT.VK_NUMPAD1] = 5;
 	this._keys[ROT.VK_H] = 6;
 	this._keys[ROT.VK_LEFT] = 6;
 	this._keys[ROT.VK_NUMPAD4] = 6;
 	this._keys[ROT.VK_Y] = 7;
+	this._keys[ROT.VK_HOME] = 7;
 	this._keys[ROT.VK_NUMPAD7] = 7;
 
 	this._initSlots();
@@ -207,7 +211,6 @@ Player.prototype._useO2 = function() {
 		this._submerged = 0;
 	} else if (ROT.RNG.getUniform() < Rules.SUFFOCATE_CHANCE) {
 		Game.text.write("You are suffocating!");
-		/* FIXME text */
 		this.damage(1);
 	}
 }

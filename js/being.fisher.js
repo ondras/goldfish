@@ -4,8 +4,7 @@ Being.Fisher = function(color, delta) {
 	this._delta = delta;
 	this._rods = [];
 	this._shrinking = false;
-	this._item = new Item.Quest(this._visual.fg);
-
+	this._item = null;
 	this._rodChar = "";
 	
 	if (delta.x*delta.y == 1) {
@@ -20,13 +19,35 @@ Being.Fisher = function(color, delta) {
 }
 Being.Fisher.extend(Being);
 
+/**
+ * Generate item + staircase, bound to dungeon creation callback
+ */
+Being.Fisher.prototype.generate = function() {
+	if (this._item) { return; }
+
+	this._item = new Item.Quest(this._visual.fg);
+	var danger = 1 + Math.floor(3 * Progress.questsGenerated / Rules.QUESTS);
+
+	var xy = this._level.pickStaircasePosition(); /* do this before we increase questsGenerated */
+
+	var staircase = new Cell.Staircase(danger);
+	staircase.setTarget(function() {
+		var level = new Level.Cavern(this._level, xy, this._item, danger);
+		staircase.setTarget(level, level.getEntrance());
+	}.bind(this));
+
+	this._level.setCell(staircase, xy);
+	
+	Progress.questsGenerated++;
+}
+
 Being.Fisher.prototype.interact = function(being) {
 	var status = being.getQuestStatus(this);
 	
 	switch (status) {
 		case 0: /* first visit */
+			if (!this._item) { this.generate(); }
 			being.addQuest(this, this._item);
-			this._level.setItem(this._item, this._level.getCenter());
 			this._chatGiveQuest();
 		break;
 		

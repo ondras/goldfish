@@ -1,7 +1,9 @@
-Level.Cavern = function(overview, xy) {
+Level.Cavern = function(overview, xy, questItem, danger) {
 	this._colors = [];
 	this._noise = new ROT.Noise.Simplex();
 	this._memory = {};
+	this._questItem = questItem;
+	this._danger = danger;
 	
 	this._overview = {
 		level: overview,
@@ -117,9 +119,9 @@ Level.Cavern.prototype._createWalls = function() {
 	this._entrance = this._createCorner(left, top);
 	this._exit = this._createCorner(!left, !top);
 	
-	var staircase = new Cell.Staircase(true); /* true = up */
+	var staircase = new Cell.Staircase(0); /* danger 0 = up */
 	staircase.setTarget(this._overview.level, this._overview.xy);
-	this._cells[this._entrance] = staircase;
+	this.setCell(staircase, this._entrance);
 }
 
 Level.Cavern.prototype._tryCreateWalls = function() {
@@ -186,8 +188,7 @@ Level.Cavern.prototype._createItems = function() {
 		this._cells[xy] = bubble;
 	}
 
-	var item = new Item.Scale(3);
-	this.setItem(item, new XY(this._entrance.x+1, this._entrance.y+1));
+	this.setItem(this._questItem, this._exit);
 }
 
 Level.Cavern.prototype._createSeaweed = function() {

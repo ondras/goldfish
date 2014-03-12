@@ -1,10 +1,11 @@
-Cell.Staircase = function(up) {
-	this._up = up;
+Cell.Staircase = function(danger) {
+	var labels = ["the surface", "a shallow cavern", "a medium-depth cavern", "a deep and dangerous cavern"];
+	var colors = [[100, 100, 250], [100, 250, 100], [250, 250, 100], [250, 100, 100]];
 
 	Cell.call(this, {
-		ch: this._up ? "<" : ">",
-		fg: [100, 100, 200],
-		description: "a tunnel leading "  + (this._up ? "to the surface" : "to unknown depths")
+		ch: danger ? ">" : "<",
+		fg: colors[danger],
+		description: "a tunnel leading to "  + labels[danger]
 	}, false);
 	
 	this._target = {
@@ -21,6 +22,5 @@ Cell.Staircase.prototype.setTarget = function(level, xy) {
 
 Cell.Staircase.prototype.activate = function(being) {
 	if (!this._target.xy) { this._target.level(); } /* callback to generate the level */
-	
 	Game.switchLevel(this._target.level, this._target.xy);
 }
