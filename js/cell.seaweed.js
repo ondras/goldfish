@@ -1,8 +1,9 @@
 Cell.Seaweed = function() {
 	Cell.call(this, {
 		ch: "",
-		fg: [40, 200, 40]
-	}, false, "a seaweed");
+		fg: [40, 200, 40],
+		description: "seaweed"
+	}, false);
 }
 Cell.Seaweed.extend(Cell);
 

@@ -1,7 +1,8 @@
 Cell.Bubble = function() {
 	Cell.call(this, {
 		ch: "o",
-		fg: [40, 40, 255]
+		fg: [40, 40, 255],
+		description: "air bubble"
 	}, false);
 }
 Cell.Bubble.extend(Cell);

@@ -50,9 +50,9 @@ Level.prototype.getSize = function() {
 	return this._size;
 }
 
-Level.prototype._visualAt = function(xy) {
+Level.prototype._visualAt = function(xy, excludeBeings) {
 	var xys = xy.toString(); /* cache to optimize for speed */
-	return (this._beings[xys] || this._items[xys] || this._cells[xys] || this._empty).getVisual();
+	return ((!excludeBeings && this._beings[xys]) || this._items[xys] || this._cells[xys] || this._empty).getVisual();
 }
 
 Level.prototype.getBeingAt = function(xy) {

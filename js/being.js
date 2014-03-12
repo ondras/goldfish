@@ -35,8 +35,10 @@ Being.prototype.damage = function(damage) {
 	if (this.getStat("hp") <= 0) { this.die(); }
 }
 
+/**
+ * Called by the Engine
+ */
 Being.prototype.act = function() {
-	/* FIXME */
 }
 
 Being.prototype.die = function() {

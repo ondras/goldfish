@@ -65,7 +65,7 @@ Level.Cavern.prototype._updateFOV = function(being) {
 	this._fov = being.computeFOV();
 	for (var id in this._fov) {
 		var xy = this._fov[id];
-		this._memory[xy] = this._visualAt(xy);
+		this._memory[xy] = this._visualAt(xy, true);
 
 		if (id in oldFOV) { /* was visible, ignore */
 			delete oldFOV[id];
@@ -76,7 +76,7 @@ Level.Cavern.prototype._updateFOV = function(being) {
 	
 	for (var id in oldFOV) {
 		var xy = oldFOV[id];
-		var visual = this._visualAt(xy);
+		var visual = this._visualAt(xy, true);
 		this._drawWeak(xy, visual);
 	}
 }
@@ -87,16 +87,37 @@ Level.Cavern.prototype._getBackgroundColor = function(xy) {
 }
 
 Level.Cavern.prototype._create = function() {
-	Level.prototype._create.call(this);
 	this._createColors();
+	Level.prototype._create.call(this);
 }
 
 Level.Cavern.prototype._createColors = function() {
-	var stdDev = [0, 20, 20];
-	var base = [
-		[0, 0, 60],
-		[0, 60, 40]
-	];
+	switch (this._danger) {
+		case 1:
+			var stdDev = [0, 0, 20];
+			var base = [
+				[0, 0, 40],
+				[0, 0, 80]
+			];
+		break;
+
+		case 2:
+			var stdDev = [0, 20, 20];
+			var base = [
+				[0, 0, 60],
+				[0, 60, 40]
+			];
+		break;
+
+		case 3:
+			var stdDev = [20, 10, 20];
+			var base = [
+				[0, 0, 60],
+				[60, 0, 0]
+			];
+		break;
+	}
+
 	for (var i=0;i<base.length;i++) {
 		var c = ROT.Color.randomize(base[i], stdDev);
 		for (var j=0;j<3;j++) { c[j] = Math.min(c[j], 80); }
@@ -222,4 +243,10 @@ Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
 
 		xy.y += dy;
 	}
+}
+
+Level.Cavern.prototype._createBeings = function() {
+	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(1, 1)));
+	this.setBeing(new Being.Seahorse(), this._entrance.plus(new XY(-1, 1)));
+	this.setBeing(new Being.Crab(), this._entrance.plus(new XY(-4, -1)));
 }
