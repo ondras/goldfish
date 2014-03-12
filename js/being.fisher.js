@@ -17,7 +17,6 @@ Being.Fisher = function(color, delta) {
 	} else {
 		this._rodChar = "|";
 	}
-	window.f = this;
 }
 Being.Fisher.extend(Being);
 
@@ -27,6 +26,7 @@ Being.Fisher.prototype.interact = function(being) {
 	switch (status) {
 		case 0: /* first visit */
 			being.addQuest(this, this._item);
+			this._level.setItem(this._item, this._level.getCenter());
 			this._chatGiveQuest();
 		break;
 		
@@ -179,7 +179,7 @@ Being.Fisher.prototype._chatQuestGiven = function() {
 Being.Fisher.prototype._chatFinishQuest = function() {
 	var parts = [
 		{
-			text: "Wow! %c{fff}" + this._item.toString().capitalize() + "%c{}! Thank your very much!",
+			text: "Wow! %c{#fff}" + this._item.toString().capitalize() + "%c{}! Thank your very much!",
 			who: "f"
 		},
 		{

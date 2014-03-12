@@ -141,17 +141,12 @@ Player.prototype.handleEvent = function(e) {
 	switch (e.keyCode) {
 		case ROT.VK_I:
 			var inventory = new Inventory(this);
-			inventory.show().then(function() {
-				Game.display.clear(); /* clear all */
-				Game.status.update(); /* draw status */
-				this._level.drawMemory();
-				this._level.setBeing(this, this._xy);
-				this._listen();
-			}.bind(this));
+			inventory.show().then(this._redraw.bind(this));
 		break;
 
 		case ROT.VK_Q:
-			/* FIXME quests */
+			var quests = new Quests(this._quests);
+			quests.show().then(this._redraw.bind(this));
 		break;
 		
 		case ROT.VK_QUESTION_MARK: 
@@ -168,6 +163,8 @@ Player.prototype.handleEvent = function(e) {
 				Game.text.clear();
 				cell.activate(this);
 				this._promise.fulfill();
+			} else { /* nothing to activate here */
+				this._listen();
 			}
 		break;
 		
@@ -256,4 +253,15 @@ Player.prototype._initSlots = function() {
 	var item = new Item.Jaws(0).setStat("");
 	this._items.push(item);
 	slot.setItem(item);
+}
+
+/** 
+ * Redraw stuff after coming from a (modal) buffer
+ */
+Player.prototype._redraw = function() {
+	Game.display.clear(); /* clear all */
+	Game.status.update(); /* draw status */
+	this._level.drawMemory();
+	this._level.setBeing(this, this._xy);
+	this._listen();
 }

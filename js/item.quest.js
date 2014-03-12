@@ -11,7 +11,7 @@ Item.Quest.prototype.a = Item.Quest.prototype.toString;
 Item.Quest.NORMAL = [
 	"a World peace",
 	"an AIDS cure",
-	"a Billion dollars",
+	"a Billion dollar bill",
 	"a Beautiful wife",
 	"a Cadillac Escalade",
 	"a Hiccup cure",
