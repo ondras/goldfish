@@ -13,7 +13,7 @@ var Game = {
 	status: null,
 	turns: -1,
 
-	_engine: null,
+	engine: null,
 	
 	init: function() {
 		window.addEventListener("load", this);
@@ -39,7 +39,7 @@ var Game = {
 	},
 
 	over: function() {
-		this._engine.lock();
+		this.engine.lock();
 		this.text.write("You die... %c{#666}(reload the page to start a new game)");
 		this.text.flush();
 		/* FIXME outro? */
@@ -65,7 +65,7 @@ var Game = {
 	
 	_start: function() {
 		this.scheduler = new ROT.Scheduler.Speed();
-		this._engine = new ROT.Engine(this.scheduler);
+		this.engine = new ROT.Engine(this.scheduler);
 		
 		var options = {
 			width: this.MAP_SIZE.x,
@@ -95,10 +95,10 @@ var Game = {
 		/* FIXME build a level and position a player */
 		var overview = new Level.Overview();
 		var level = new Level.Cavern(overview, new XY(50, 15)); /* FIXME */
-		var size = level.getSize();
-		this.switchLevel(level, level.getEntrance());
+		var center = overview.getCenter();
+		this.switchLevel(overview, center);
 
-		this._engine.start();
+		this.engine.start();
 	}
 }
 

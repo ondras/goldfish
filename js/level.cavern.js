@@ -192,7 +192,7 @@ Level.Cavern.prototype._createItems = function() {
 
 Level.Cavern.prototype._createSeaweed = function() {
 	for (var i=0;i<this._size.x;i++) {
-		if (ROT.RNG.getUniform() < Rules.SEAWEED_CHANCE) { continue; }
+		if (ROT.RNG.getUniform() > Rules.SEAWEED_CHANCE) { continue; }
 		var dy = (ROT.RNG.getUniform() > 0.5 ? 1 : -1);
 		var xy = new XY(i, Math.round(this._size.y/2));
 		var lastFree = null;

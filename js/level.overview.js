@@ -18,11 +18,61 @@ Level.Overview.prototype.drawMemory = function() {
 	}
 }
 
-Level.Overview.prototype._getBackgroundColor = function(xy) {
-	return [0, 0, 0];
+Level.Overview.prototype.getCenter = function() {
+	return new XY(Math.round(this._size.x/2), Math.round(this._size.y/2));
+}
+
+Level.Overview.prototype.setBeing = function(being, xy) {
+	Level.prototype.setBeing.call(this, being, xy);
+	
+	if (being == Game.player) {
+		var cell = this._cells[xy];
+		if (cell instanceof Cell.Rod && cell.isLast()) {
+			var fisher = cell.getFisher();
+			fisher.interact(being);
+		}
+	}
 }
 
 Level.Overview.prototype._createBeings = function() {
+	var cnt = Rules.QUESTS;
+	var center = this.getCenter();
+	var aspect = this._size.x/this._size.y;
+
+	for (var i=0;i<cnt;i++) {
+		var angle = (i+0.5) * 2*Math.PI/cnt;
+
+		var exact = new XY(center.x, center.y);
+		var xy = new XY(center.x, center.y);
+
+		while (this._cells[xy] != Cell.grass) {
+			exact.x += Math.cos(angle);
+			exact.y += Math.sin(angle) / aspect;
+			xy.x = Math.round(exact.x);
+			xy.y = Math.round(exact.y);
+		}
+		
+		var hue = angle/(2*Math.PI);
+		var color = ROT.Color.hsl2rgb([hue, 1, 0.7]);
+		this._createFisher(xy, color);
+	}
+}
+
+Level.Overview.prototype._createFisher = function(xy, color) {
+	var center = this.getCenter();
+	var dx = center.x-xy.x;
+	var dy = center.y-xy.y;
+	var angle = Math.atan2(dy, dx).mod(2*Math.PI);
+	var ratio = Math.abs(dx/dy) * this._size.y/this._size.x;
+	
+	var delta = new XY(1, 1);
+	if (dx < 0) { delta.x *= -1; }
+	if (dy < 0) { delta.y *= -1; }
+	if (ratio > 2) { delta.y = 0; }
+	if (ratio < 0.5) { delta.x = 0; }
+	
+	var fisher = new Being.Fisher(color, delta);
+	this.setBeing(fisher, xy);
 }
 
 Level.Overview.prototype._createWalls = function() {
@@ -72,4 +122,8 @@ Level.Overview.prototype._createShore = function() {
 		var b = !(new XY(xy.x, xy.y+1) in this._cells);
 		if (l || r || t || b) { this._cells[id] = Cell.shore; }
 	}
+}
+
+Level.Overview.prototype._getBackgroundColor = function(xy) {
+	return [0, 0, 0];
 }

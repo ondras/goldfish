@@ -11,6 +11,7 @@ var Player = function() {
 	this._promise = null;
 	this._items = [];
 	this._slots = [];
+	this._quests = [];
 	
 	this._keys = {};
 	this._keys[ROT.VK_K] = 0;
@@ -44,6 +45,31 @@ Player.prototype.getItems = function() {
 
 Player.prototype.getSlots = function() {
 	return this._slots;
+}
+
+Player.prototype.setQuestStatus = function(fisher, status) {
+	for (var i=0;i<this._quests.length;i++) {
+		var q = this._quests[i];
+		if (q.fisher == fisher) { q.status = status; }
+	}
+
+	return this;
+}
+
+Player.prototype.getQuestStatus = function(fisher) {
+	for (var i=0;i<this._quests.length;i++) {
+		var q = this._quests[i];
+		if (q.fisher == fisher) { 
+			if (this._items.indexOf(q.item) > -1 && q.status == 1) { q.status = 2; } /* we have the quest item, cool! */
+			return q.status; 
+		}
+	}
+	return 0;
+}
+
+Player.prototype.addQuest = function(fisher, item) {
+	this._quests.push({fisher:fisher, item:item, status:1});
+	return this;
 }
 
 Player.prototype.setStat = function(name, value) {
@@ -99,7 +125,7 @@ Player.prototype.handleEvent = function(e) {
 		var dir = ROT.DIRS[8][direction];
 		var xy = this._xy.plus(new XY(dir[0], dir[1]));
 		var being = this._level.getBeingAt(xy);
-		if (being) { /* attack */
+		if (being && being instanceof Being.Enemy) { /* attack */
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
 			var d = this._level.getCellAt(xy).getVisual().description;
@@ -182,7 +208,7 @@ Player.prototype._useO2 = function() {
 	if (current) {
 		this.adjustStat("o2", -1)
 		this._submerged = 0;
-	} else if (ROT.RNG.getUniform() > Rules.SUFFOCATE_CHANCE) {
+	} else if (ROT.RNG.getUniform() < Rules.SUFFOCATE_CHANCE) {
 		Game.text.write("You are suffocating!");
 		/* FIXME text */
 		this.damage(1);

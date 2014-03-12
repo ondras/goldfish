@@ -13,8 +13,13 @@ Level.prototype.drawMemory = function() {
 }
 
 /** Eating a seaweed, visiting an O2 bubble */
-Level.prototype.removeCell = function(xy) {
-	delete this._cells[xy];
+Level.prototype.setCell = function(cell, xy) {
+	if (cell) {
+		this._cells[xy] = cell;
+	} else {
+		delete this._cells[xy];
+	}
+	this.draw(xy);
 }
 
 Level.prototype.activate = function() {

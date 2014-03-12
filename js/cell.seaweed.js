@@ -19,6 +19,6 @@ Cell.Seaweed.prototype.enter = function(being) {
 		being.adjustStat("hp", Math.min(Rules.SEAWEED_HEAL, maxhp-hp));
 		
 		if (being == Game.player) { Game.text.write("You heal yourself a bit by eating some seaweed."); }
-		this._level.removeCell(this._xy);
+		this._level.setCell(null, this._xy);
 	}
 }

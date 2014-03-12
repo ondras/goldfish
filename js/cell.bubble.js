@@ -13,6 +13,6 @@ Cell.Bubble.prototype.enter = function(being) {
 	if (o2 < maxo2) {
 		being.adjustStat("o2", Math.min(Rules.BUBBLE_RESTORE, maxo2-o2));
 		if (being == Game.player) { Game.text.write("You restore a bit of oxygen from this bubble."); }
-		this._level.removeCell(this._xy);
+		this._level.setCell(null, this._xy);
 	}
 }
