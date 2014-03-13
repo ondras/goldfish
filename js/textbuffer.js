@@ -16,7 +16,7 @@ TextBuffer.prototype.clear = function() {
 }
 
 TextBuffer.prototype.write = function(text) {
-	this._data.push(text);
+	this._data.push("%c{}" + text);
 }
 
 TextBuffer.prototype.flush = function() {

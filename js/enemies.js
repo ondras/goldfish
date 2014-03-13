@@ -3,14 +3,15 @@
  */
 Being.Seahorse = function() {
 	Being.call(this, {ch:"§", fg:[250, 250, 0], description:"seahorse"});
+	/* FIXME faster? */
 }
 Being.Seahorse.extend(Being);
 
 Being.Seahorse.CHATS = [
+	"These waters are dangerous!",
+	"Did you know? Jellyfish can harm all living creatures.",
+	"Did you know? You will run out of oxygen if you spend too much time underwater."
 	/* FIXME */
-	"chat 1",
-	"chat 2",
-	"chat 3"
 ];
 
 Being.Seahorse.prototype.act = function() {
@@ -22,13 +23,43 @@ Being.Seahorse.prototype.chat = function(being) {
 	Game.text.write('%It says: "%s"'.format(this, Being.Seahorse.CHATS.random()));
 }
 
-
+/**
+ * Clusters. FIXME
+ */
 Being.Jellyfish = function() {
 	Being.Enemy.call(this, {ch:"Ω", fg:[255, 105, 180], description:"jellyfish"});
+	this._aggressive = true;
 }
 Being.Jellyfish.extend(Being.Enemy);
 
+Being.Jellyfish.prototype.act = function() {
+	var avail = [];
+	ROT.DIRS[8].forEach(function(dir) {
+		var xy = this._xy.plus(new XY(dir[0], dir[1]));
+		var being = this._level.getBeingAt(xy);
+		if (being && !(being instanceof Being.Jellyfish)) { avail.push(being); }
+	}, this);
 
+	if (avail.length) {
+		this._attack(avail.random());
+	} else {
+		this._idle();
+	}
+}
+
+
+/**
+ * Agressive.
+ */
+Being.Piranha = function() {
+	Being.Enemy.call(this, {ch:"p", fg:[200, 200, 200], description:"piranha"});
+	this._aggressive = true;
+}
+Being.Piranha.extend(Being.Enemy);
+
+/**
+ * Agressive, but moves only close to walls
+ */
 Being.Crab = function() {
 	Being.Enemy.call(this, {ch:"x", fg:[250, 50, 50], description:"crab"});
 	this._aggressive = true;
