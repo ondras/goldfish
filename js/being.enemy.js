@@ -35,26 +35,3 @@ Being.Enemy.prototype._getCloserTo = function(being) {
 	if (xy.dist8(target) > this._xy.dist8(target)) { return; } /* closest free worse than current */
 	this._level.setBeing(this, xy);
 }
-
-Being.Enemy.prototype._idle = function() {
-	var xy = this._getAvailableNeighbors().random();
-	if (xy) { this._level.setBeing(this, xy); }
-}
-
-Being.Enemy.prototype._getAvailableNeighbors = function() {
-	var result = [];
-	ROT.DIRS[8].forEach(function(dir) {
-		var xy = new XY(this._xy.x + dir[0], this._xy.y + dir[1]);
-		if (!this._isAvailableNeighbor(xy)) { return; }
-		result.push(xy);
-	}, this);
-	return result;
-}
-
-Being.Enemy.prototype._isAvailableNeighbor = function(xy) {
-	return (!this._level.blocks(xy) && !this._level.getBeingAt(xy));
-}
-
-Being.Enemy.prototype._attack = function(being) {
-	/* FIXME */
-}

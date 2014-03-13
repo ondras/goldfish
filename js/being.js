@@ -42,6 +42,7 @@ Being.prototype.act = function() {
 }
 
 Being.prototype.die = function() {
+	this._level.setBeing(null, this._xy);
 	Game.scheduler.remove(this);
 }
 
@@ -52,4 +53,38 @@ Being.prototype.setPosition = function(xy, level) {
 	}
 
 	return Entity.prototype.setPosition.call(this, xy, level);
+}
+
+Being.prototype._attack = function(defender) {
+	/* FIXME damage status, FIXME kill */
+	var attack = this.getStat("attack");
+	var defense = this.getStat("defense");
+
+	attack += ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
+	defense += ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
+
+	attack = Math.max(1, attack);
+	defense = Math.max(1, defense);
+
+	var damage = Math.ceil(attack/defense) - 1;
+	var verb = damage ? "hit" : "miss";
+
+	Game.text.write(("%The %{verb," + verb + "} %the.").format(this, this, defender));
+
+	if (damage) { defender.damage(damage); }
+}
+
+Being.prototype._idle = function() {
+	var xy = this._getAvailableNeighbors().random();
+	if (xy) { this._level.setBeing(this, xy); }
+}
+
+Being.prototype._getAvailableNeighbors = function() {
+	var result = [];
+	ROT.DIRS[8].forEach(function(dir) {
+		var xy = new XY(this._xy.x + dir[0], this._xy.y + dir[1]);
+		if (this._level.blocks(xy) || this._level.getBeingAt(xy)) { return; }
+		result.push(xy);
+	}, this);
+	return result;
 }

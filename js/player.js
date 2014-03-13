@@ -1,5 +1,5 @@
 var Player = function() {
-	Being.call(this, {ch:"@", fg:Game.GOLD});
+	Being.call(this, {ch:"@", fg:Game.GOLD, description:"you"});
 	
 	this._stats.maxhp = 20;
 	this._stats.hp = this._stats.maxhp;
@@ -42,6 +42,12 @@ var Player = function() {
 	this._initSlots();
 }
 Player.extend(Being);
+
+Player.prototype.a = Player.prototype.the = Player.prototype.toString;
+
+Player.prototype.verb = function(verb) {
+    return verb;
+}
 
 Player.prototype.getItems = function() {
 	return this._items;
@@ -100,6 +106,8 @@ Player.prototype.setPosition = function(xy, level) {
 	}
 
 	Being.prototype.setPosition.call(this, xy, level);
+
+	this._describe();
 }
 
 Player.prototype.act = function() {
@@ -129,6 +137,7 @@ Player.prototype.handleEvent = function(e) {
 		var dir = ROT.DIRS[8][direction];
 		var xy = this._xy.plus(new XY(dir[0], dir[1]));
 		var being = this._level.getBeingAt(xy);
+		/* FIXME seahorse */
 		if (being && being instanceof Being.Enemy) { /* attack */
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
@@ -196,12 +205,8 @@ Player.prototype.computeFOV = function() {
 }
 
 Player.prototype._listen = function(e) {
-	this._describe();
+	Game.text.flush();
 	window.addEventListener("keydown", this);
-}
-
-Player.prototype._attack = function(being) {
-	/* FIXME */
 }
 
 Player.prototype._useO2 = function() {
@@ -233,8 +238,6 @@ Player.prototype._describe = function() {
 			Game.text.write("%c{#666}(press %c{#fff}Enter%c{#666} to pick it up)");
 		}
 	}
-
-	Game.text.flush();
 }
 
 Player.prototype._pick = function(item) {

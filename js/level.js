@@ -68,6 +68,12 @@ Level.prototype.getCellAt = function(xy) {
 }
 
 Level.prototype.setBeing = function(being, xy) {
+	if (!being) { 
+		delete this._beings[xy];
+		if (Game.level == this) { this.draw(xy); }
+		return;
+	}
+
 	/* remove from old position, draw */
 	if (being.getLevel() == this) {
 		var oldXY = being.getXY();

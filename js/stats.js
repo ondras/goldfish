@@ -4,7 +4,7 @@ Stats.all = ["hp", "maxhp", "o2", "maxo2", "speed", "sight", "attack", "defense"
 Stats.avail = ["maxhp", "maxo2", "speed", "sight", "attack", "defense"];
 
 Stats.maxhp = {
-	def: 20, /* shall be no more than ~55 in order to fit a 100-width */
+	def: 2, /* shall be no more than ~55 in order to fit a 100-width */
 	short: "HP",
 	label: "Vitality",
 	random: [1, [2, 3], [3, 4], [4, 5]]

@@ -31,9 +31,14 @@ Entity.prototype.the = function() {
     return "the " + this._visual.description;
 }
 
+Entity.prototype.verb = function(verb) {
+    return verb + (verb.charAt(verb.length-1) == "s" ? "es" : "s");
+}
+
 Entity.prototype.toString = function() {
     return this._visual.description;
 }
 
 String.format.map.a = "a";
 String.format.map.the = "the";
+String.format.map.verb = "verb";
