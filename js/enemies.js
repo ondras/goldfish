@@ -47,6 +47,37 @@ Being.Jellyfish.prototype.act = function() {
 	}
 }
 
+/**
+ * Move to place with most Jellyfish neighbors
+ */
+Being.Jellyfish.prototype._idle = function() {
+	var avail = this._getAvailableNeighbors();
+	if (!avail.length) { return; }
+
+	var candidates = [];
+	var max = -1;
+	
+	for (var i=0;i<avail.length;i++) {
+		var xy = avail[i];
+		var count = this._jellyNeighborCount(xy);
+		if (count > max) {
+			max = count;
+			candidates = [];
+		}
+		if (count == max) { candidates.push(xy); }
+	}
+
+	this._level.setBeing(this, candidates.random());
+}
+
+Being.Jellyfish.prototype._jellyNeighborCount = function(xy) {
+	var count = 0;
+	ROT.DIRS[8].forEach(function(dir) {
+		var being = this._level.getBeingAt(new XY(xy.x + dir[0], xy.y + dir[1]));
+		if (being && being instanceof Being.Jellyfish && being != this) { count++; }
+	}, this);
+	return count;
+}
 
 /**
  * Agressive.

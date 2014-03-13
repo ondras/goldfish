@@ -9,11 +9,11 @@ var Being = function(visual) {
 Being.extend(Entity);
 
 Being.prototype.getStat = function(name) {
-	return Math.max(0, this._stats[name]);
+	return this._stats[name];
 }
 
 Being.prototype.setStat = function(name, value) {
-	this._stats[name] = Math.max(0, value);
+	this._stats[name] = value;
 	return this;
 }
 
@@ -32,7 +32,7 @@ Being.prototype.getSpeed = function() {
 
 Being.prototype.damage = function(damage) {
 	this.adjustStat("hp", -damage);
-	if (this.getStat("hp") == 0) { this.die(); }
+	if (this.getStat("hp") <= 0) { this.die(); }
 }
 
 /**
@@ -59,26 +59,31 @@ Being.prototype._attack = function(defender) {
 	var attack = this.getStat("attack");
 	var defense = this.getStat("defense");
 
-	attack += ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
-	defense += ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
+	var abonus = ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
+	var dbonus = ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
+	
+	console.log("Attack:", attack, "+", abonus, "vs.", defense, "+", dbonus);
 
+	attack += abonus;
+	defense += dbonus;
 	attack = Math.max(1, attack);
 	defense = Math.max(1, defense);
 
 	var damage = Math.ceil(attack/defense) - 1;
+	
+	this._describeAttack(defender, damage);
+	
 	if (damage) { defender.damage(damage); }
+}
 
+Being.prototype._describeAttack = function(defender, damage) {
 	if (!this._level.isVisible(this._xy) || !this._level.isVisible(defender.getXY())) { return; }
 
 	if (damage) {
-		defender.damage(damage);
-
-		var amount = defender.getStat("hp") / defender.getStat("maxhp");
+		var amount = Math.max(defender.getStat("hp")-damage, 0) / defender.getStat("maxhp");
 		if (!amount) { /* dead */
-			if (defender != Game.player) { 
-				var verb = ["kill", "destroy", "slaughter"].random();
-				Game.text.write(("%The %{verb,kill} %the.").format(this, this, defender));
-			}
+			var verb = ["kill", "destroy", "slaughter"].random();
+			Game.text.write(("%The %{verb,kill} %the.").format(this, this, defender));
 		} else { /* hit */
 			var types = ["slightly", "moderately", "severly", "critically"].reverse();
 			amount = Math.ceil(amount * types.length) - 1;

@@ -1,9 +1,15 @@
 Being.Enemy = function(visual) {
 	Being.call(this, visual);
-	
 	this._aggressive = false;
 }
 Being.Enemy.extend(Being);
+
+Being.Enemy.prototype.setDanger = function(danger) {
+	var factor = 1 + (danger-1)/5;
+	for (var p in this._stats) {
+		this._stats[p] = Math.round(this._stats[p] * factor);
+	}
+}
 
 Being.Enemy.prototype.damage = function(damage) {
 	this._aggressive = true;
