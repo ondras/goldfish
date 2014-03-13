@@ -28,10 +28,10 @@ Stats.o2 = {
 }
 
 Stats.speed = {
-	def: 50,
+	def: 10,
 	label: "Speed",
 	short: "SPD",
-	random: [[2, 5], [4, 8], [7, 10], [9, 15]]
+	random: [1, [2, 3], [3, 4], [4, 5]]
 }
 
 Stats.sight = {
@@ -42,14 +42,14 @@ Stats.sight = {
 }
 
 Stats.attack = {
-	def: 20,
+	def: 10,
 	label: "Attack",
 	short: "ATK",
 	random: [1, [2, 3], [3, 4], [4, 5]]
 }
 
 Stats.defense = {
-	def: 20,
+	def: 10,
 	label: "Defense",
 	short: "DEF",
 	random: Stats.attack.random

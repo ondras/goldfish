@@ -24,6 +24,16 @@ Being.Seahorse.prototype.chat = function(being) {
 }
 
 /**
+ * Also not really an enemy.
+ */
+Being.Starfish = function() {
+	var hue = ROT.RNG.getUniform();
+	Being.call(this, {ch:"*", fg:ROT.Color.hsl2rgb([hue, 1, 0.5]), description:"starfish"});
+	this._stats.defense = 0;
+}
+Being.Starfish.extend(Being);
+
+/**
  * Clusters. FIXME
  */
 Being.Jellyfish = function() {
@@ -137,4 +147,22 @@ Being.LargeSnake = function() {
 }
 Being.LargeSnake.extend(Being.Enemy);
 
+/**
+ * Non-agressive.
+ */
+Being.Swordfish = function() {
+	/* FIXME char */
+	Being.Enemy.call(this, {ch:"&", fg:[200, 200, 200], description:"swordfish"});
+}
+Being.Swordfish.extend(Being.Enemy);
 
+/**
+ * Agressive.
+ */
+Being.Octopus = function() {
+	Being.Enemy.call(this, {ch:"O", fg:[200, 50, 200], description:"octopus"});
+	this._aggressive = true;
+}
+Being.Octopus.extend(Being.Enemy);
+
+/* FIXME nejakou tuctovou rybu */

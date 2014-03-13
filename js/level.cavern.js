@@ -19,6 +19,15 @@ Level.Cavern = function(overview, xy, questItem, danger) {
 Level.Cavern.extend(Level);
 
 Level.Cavern.prototype.drawMemory = function() {
+	var xy = new XY();
+	for (var i=0;i<this._size.x;i++) {
+		xy.x = i;
+		for (var j=0;j<this._size.y;j++) {
+			xy.y = j;
+			this.draw(xy);
+		}
+	}; return;
+	
 	this._fov = {};
 	for (var xy in this._memory) {
 		this._drawWeak(XY.fromString(xy), this._memory[xy]);
@@ -35,7 +44,7 @@ Level.Cavern.prototype.getEntrance = function() {
 
 Level.Cavern.prototype.draw = function(xy) {
 	/* draw only when in player's FOV */
-	if (xy in this._fov) { return Level.prototype.draw.call(this, xy); }
+	if (1 || xy in this._fov) { return Level.prototype.draw.call(this, xy); }
 }
 
 /** setBeing completely overriden due to FOV */
@@ -148,8 +157,17 @@ Level.Cavern.prototype._createWalls = function() {
 	
 	var left = ROT.RNG.getUniform() > 0.5;
 	var top = ROT.RNG.getUniform() > 0.5;
+
 	this._entrance = this._createCorner(left, top);
 	this._exit = this._createCorner(!left, !top);
+	
+	/* "safe zone" */
+	var r = 3;
+	for (var i=-r;i<=r;i++) {
+		for (var j=-r;j<=r;j++) {
+			delete this._free[new XY(this._entrance.x+i, this._entrance.y+j)];
+		}
+	}
 	
 	var staircase = new Cell.Staircase(0); /* danger 0 = up */
 	staircase.setTarget(this._overview.level, this._overview.xy);
@@ -257,10 +275,98 @@ Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
 }
 
 Level.Cavern.prototype._createBeings = function() {
-	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(1, 1)));
-	this.setBeing(new Being.Snake(), this._entrance.plus(new XY(2, 1)));
-	this.setBeing(new Being.LargeSnake(), this._entrance.plus(new XY(3, 1)));
-//	this.setBeing(new Being.Seahorse(), this._entrance.plus(new XY(-1, 1)));
-//	this.setBeing(new Being.Crab(), this._entrance.plus(new XY(-4, -1)));
-//	this.setBeing(new Being.Piranha(), this._entrance.plus(new XY(1, -1)));
+	switch (this._danger) {
+		case 1:
+			this._createBoss(Being.Piranha);
+			this._createJellyfish(1);
+			this._createCrab(3);
+			
+			this._createBeing(Being.Snake, [1, 3]);
+			this._createBeing(Being.Swordfish, [1, 3]);
+		break;
+		
+		case 2:
+			this._createBoss(Being.LargeSnake);
+			this._createJellyfish(2);
+			this._createCrab(5);
+
+			this._createBeing(Being.Piranha, [1, 3]);
+			this._createBeing(Being.Snake, [1, 3]);
+			this._createBeing(Being.Swordfish, [1, 3]);
+		break;
+		
+		case 3:
+			this._createBoss(Being.Octopus);
+			this._createJellyfish(3);
+			this._createCrab(7);
+
+			this._createBeing(Being.Piranha, [1, 3]);
+			this._createBeing(Being.Snake, [1, 3]);
+			this._createBeing(Being.LargeSnake, [1, 3]);
+			this._createBeing(Being.Swordfish, [1, 3]);
+		break;
+	}
+	
+	this._createBeing(Being.Seahorse, 2);
+	// FIXME this._createBeing(Being.GenericFish, 5);
+	this._createStarfish(4);
+	
+	for (var p in this._beings) { 
+		var being = this._beings[p];
+		if (!(being instanceof Being.Enemy)) { return; }
+
+		being.setDanger(this._danger);
+		if (ROT.RNG.getUniform() > Rules.ITEM_CHANCE) { continue; }
+	//	var item = ...
+		//being.setItem(item);
+	}
+}
+
+Level.Cavern.prototype._createBeing = function(ctor, count) {
+	if (count instanceof Array) { count = count[0] + Math.floor(ROT.RNG.getUniform() * (count[1]-count[0]+1)); }
+	
+	while (count--) {
+		var xy = this._findFree();
+		delete this._free[xy];
+		this.setBeing(new ctor(), xy);
+	}
+}
+
+Level.Cavern.prototype._createJellyfish = function(clusterCount) {
+	while (clusterCount--) {
+		var center = this._findFree();
+		for (var i=-1;i<=1;i++) {
+			for (var j=-1;j<=1;j++) {
+				var xy = new XY(center.x+i, center.y+j);
+				if (!(xy in this._free)) { continue; }
+				if (ROT.RNG.getUniform() > 0.5) { continue; }
+				delete this._free[xy];
+				this.setBeing(new Being.Jellyfish(), xy);
+			}
+		}
+	}
+}
+
+Level.Cavern.prototype._createStarfish = function(count) {
+	var avail = this._findFreeNearWall().randomize();
+	while (count--) {
+		var xy = avail.pop();
+		delete this._free[xy];
+		this.setBeing(new Being.Starfish(), xy);
+	}
+}
+
+Level.Cavern.prototype._createCrab = function(count) {
+	var avail = this._findFreeNearWall().randomize();
+	while (count--) {
+		var xy = avail.pop();
+		delete this._free[xy];
+		this.setBeing(new Being.Crab(), xy);
+	}
+}
+
+Level.Cavern.prototype._createBoss = function(ctor) {
+	var xy = this._findFreeClosestTo(this._exit);
+	delete this._free[xy];
+	this.setBeing(new ctor(), xy);
 }

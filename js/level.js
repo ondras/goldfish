@@ -162,3 +162,19 @@ Level.prototype._findFreeClosestTo = function(xy) {
 Level.prototype._findFree = function() {
 	return this._free[Object.keys(this._free).random()];
 }
+
+Level.prototype._findFreeNearWall = function() {
+	var avail = [];
+	for (var id in this._free) {
+		var xy = this._free[id];
+		for (var i=0;i<8;i++) {
+			var dir = ROT.DIRS[8][i];
+			var xy2 = xy.plus(new XY(dir[0], dir[1]));
+			if (this._cells[xy2] == Cell.wall) { 
+				avail.push(xy);
+				break;
+			}
+		}
+	}
+	return avail;
+}

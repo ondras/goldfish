@@ -1,6 +1,7 @@
 Being.Enemy = function(visual) {
 	Being.call(this, visual);
 	this._aggressive = false;
+	this._item = null;
 }
 Being.Enemy.extend(Being);
 
@@ -9,6 +10,16 @@ Being.Enemy.prototype.setDanger = function(danger) {
 	for (var p in this._stats) {
 		this._stats[p] = Math.round(this._stats[p] * factor);
 	}
+}
+
+Being.Enemy.prototype.setItem = function(item) {
+	this._item = item;
+	return this;
+}
+
+Being.Enemy.prototype.die = function() {
+	if (this._item && !this._level.getItemAt(this._xy)) { this._level.setItem(this._item, this._xy); }
+	Being.prototype.die.call(this);
 }
 
 Being.Enemy.prototype.damage = function(damage) {
