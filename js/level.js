@@ -81,9 +81,10 @@ Level.prototype.setBeing = function(being, xy) {
 		if (Game.level == this) { this.draw(oldXY); }
 	}
 
-	being.setPosition(xy, this); /* propagate position data to the entity itself */
 	var cell = this._cells[xy];
 	if (cell && cell.enter) { cell.enter(being); }
+
+	being.setPosition(xy, this); /* propagate position data to the entity itself */
 
 	/* set new position, draw */
 	this._beings[xy] = being;
