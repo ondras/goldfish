@@ -25,6 +25,10 @@ Level.Cavern.prototype.drawMemory = function() {
 	}
 }
 
+Level.Cavern.prototype.isVisible = function(xy) {
+	return (xy in this._fov);
+}
+
 Level.Cavern.prototype.getEntrance = function() {
 	return this._entrance;
 }

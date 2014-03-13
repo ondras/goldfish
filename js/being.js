@@ -13,7 +13,7 @@ Being.prototype.getStat = function(name) {
 }
 
 Being.prototype.setStat = function(name, value) {
-	this._stats[name] = value;
+	this._stats[name] = Math.max(0, value);
 	return this;
 }
 
@@ -32,7 +32,7 @@ Being.prototype.getSpeed = function() {
 
 Being.prototype.damage = function(damage) {
 	this.adjustStat("hp", -damage);
-	if (this.getStat("hp") <= 0) { this.die(); }
+	if (this.getStat("hp") == 0) { this.die(); }
 }
 
 /**
@@ -56,7 +56,6 @@ Being.prototype.setPosition = function(xy, level) {
 }
 
 Being.prototype._attack = function(defender) {
-	/* FIXME damage status, FIXME kill */
 	var attack = this.getStat("attack");
 	var defense = this.getStat("defense");
 
@@ -67,11 +66,27 @@ Being.prototype._attack = function(defender) {
 	defense = Math.max(1, defense);
 
 	var damage = Math.ceil(attack/defense) - 1;
-	var verb = damage ? "hit" : "miss";
-
-	Game.text.write(("%The %{verb," + verb + "} %the.").format(this, this, defender));
-
 	if (damage) { defender.damage(damage); }
+
+	if (!this._level.isVisible(this._xy) || !this._level.isVisible(defender.getXY())) { return; }
+
+	if (damage) {
+		defender.damage(damage);
+
+		var amount = defender.getStat("hp") / defender.getStat("maxhp");
+		if (!amount) { /* dead */
+			if (defender != Game.player) { 
+				var verb = ["kill", "destroy", "slaughter"].random();
+				Game.text.write(("%The %{verb,kill} %the.").format(this, this, defender));
+			}
+		} else { /* hit */
+			var types = ["slightly", "moderately", "severly", "critically"].reverse();
+			amount = Math.ceil(amount * types.length) - 1;
+			Game.text.write(("%The %{verb,hit} %the and " + types[amount] +" %{verb,damage} %it.").format(this, this, defender, this, defender));
+		} 
+	} else {
+		Game.text.write(("%The %{verb,miss} %the.").format(this, this, defender));
+	}
 }
 
 Being.prototype._idle = function() {

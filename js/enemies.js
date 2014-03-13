@@ -6,8 +6,20 @@ Being.Seahorse = function() {
 }
 Being.Seahorse.extend(Being);
 
+Being.Seahorse.CHATS = [
+	/* FIXME */
+	"chat 1",
+	"chat 2",
+	"chat 3"
+];
+
 Being.Seahorse.prototype.act = function() {
 	this._idle();
+}
+
+Being.Seahorse.prototype.chat = function(being) {
+	Game.text.write("%The talk to %a.".format(being, this));
+	Game.text.write('%It says: "%s"'.format(this, Being.Seahorse.CHATS.random()));
 }
 
 

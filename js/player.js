@@ -43,7 +43,7 @@ var Player = function() {
 }
 Player.extend(Being);
 
-Player.prototype.a = Player.prototype.the = Player.prototype.toString;
+Player.prototype.a = Player.prototype.the = Player.prototype.it = Player.prototype.toString;
 
 Player.prototype.verb = function(verb) {
     return verb;
@@ -137,8 +137,9 @@ Player.prototype.handleEvent = function(e) {
 		var dir = ROT.DIRS[8][direction];
 		var xy = this._xy.plus(new XY(dir[0], dir[1]));
 		var being = this._level.getBeingAt(xy);
-		/* FIXME seahorse */
-		if (being && being instanceof Being.Enemy) { /* attack */
+		if (being && being instanceof Being.Seahorse) { /* chat */
+			being.chat(this);
+		} else if (being && being instanceof Being.Enemy) { /* attack */
 			this._attack(being);
 		} else if (this._level.blocks(xy)) { /* collision, noop */
 			var d = this._level.getCellAt(xy).getVisual().description;
