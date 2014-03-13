@@ -80,15 +80,6 @@ Being.Jellyfish.prototype._jellyNeighborCount = function(xy) {
 }
 
 /**
- * Agressive.
- */
-Being.Piranha = function() {
-	Being.Enemy.call(this, {ch:"p", fg:[200, 200, 200], description:"piranha"});
-	this._aggressive = true;
-}
-Being.Piranha.extend(Being.Enemy);
-
-/**
  * Agressive, but moves only close to walls
  */
 Being.Crab = function() {
@@ -118,3 +109,32 @@ Being.Crab.prototype._hasWallNeighbor = function(xy) {
 	}, this);
 	return result;
 }
+
+/**
+ * Agressive.
+ */
+Being.Piranha = function() {
+	Being.Enemy.call(this, {ch:"p", fg:[200, 200, 200], description:"piranha"});
+	this._aggressive = true;
+}
+Being.Piranha.extend(Being.Enemy);
+
+/**
+ * Semi-aggresive.
+ */
+Being.Snake = function() {
+	Being.Enemy.call(this, {ch:"s", fg:[50, 250, 50], description:"water snake"});
+	this._aggressive = (ROT.RNG.getUniform() > 0.5);
+}
+Being.Snake.extend(Being.Enemy);
+
+/**
+ * Aggresive.
+ */
+Being.LargeSnake = function() {
+	Being.Enemy.call(this, {ch:"S", fg:[30, 200, 30], description:"large snake"});
+	this._aggressive = true;
+}
+Being.LargeSnake.extend(Being.Enemy);
+
+

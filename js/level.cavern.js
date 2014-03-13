@@ -258,9 +258,8 @@ Level.Cavern.prototype._createSeaweedLine = function(xy, dy) {
 
 Level.Cavern.prototype._createBeings = function() {
 	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(1, 1)));
-	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(2, 1)));
-	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(3, 1)));
-	this.setBeing(new Being.Jellyfish(), this._entrance.plus(new XY(4, 1)));
+	this.setBeing(new Being.Snake(), this._entrance.plus(new XY(2, 1)));
+	this.setBeing(new Being.LargeSnake(), this._entrance.plus(new XY(3, 1)));
 //	this.setBeing(new Being.Seahorse(), this._entrance.plus(new XY(-1, 1)));
 //	this.setBeing(new Being.Crab(), this._entrance.plus(new XY(-4, -1)));
 //	this.setBeing(new Being.Piranha(), this._entrance.plus(new XY(1, -1)));
