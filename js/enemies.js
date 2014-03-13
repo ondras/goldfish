@@ -28,10 +28,11 @@ Being.Seahorse.prototype.chat = function(being) {
  */
 Being.Starfish = function() {
 	var hue = ROT.RNG.getUniform();
-	Being.call(this, {ch:"*", fg:ROT.Color.hsl2rgb([hue, 1, 0.5]), description:"starfish"});
+	Being.Enemy.call(this, {ch:"*", fg:ROT.Color.hsl2rgb([hue, 1, 0.5]), description:"starfish"});
 	this._stats.defense = 0;
 }
-Being.Starfish.extend(Being);
+Being.Starfish.extend(Being.Enemy);
+Being.Starfish.prototype.act = function() {};
 
 /**
  * Clusters. FIXME

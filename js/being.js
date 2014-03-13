@@ -57,7 +57,7 @@ Being.prototype.setPosition = function(xy, level) {
 
 Being.prototype._attack = function(defender) {
 	var attack = this.getStat("attack");
-	var defense = this.getStat("defense");
+	var defense = defender.getStat("defense");
 
 	var abonus = ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);
 	var dbonus = ROT.RNG.getNormal(0, Rules.COMBAT_STDDEV);

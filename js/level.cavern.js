@@ -310,6 +310,12 @@ Level.Cavern.prototype._createBeings = function() {
 	this._createBeing(Being.Seahorse, 2);
 	// FIXME this._createBeing(Being.GenericFish, 5);
 	this._createStarfish(4);
+
+	var itemMap = {
+		"Scale": 3,
+		"Fin": 2,
+		"Jaws": 1
+	}
 	
 	for (var p in this._beings) { 
 		var being = this._beings[p];
@@ -317,8 +323,10 @@ Level.Cavern.prototype._createBeings = function() {
 
 		being.setDanger(this._danger);
 		if (ROT.RNG.getUniform() > Rules.ITEM_CHANCE) { continue; }
-	//	var item = ...
-		//being.setItem(item);
+		
+		var itemLevel = (ROT.RNG.getUniform() > 0.5 ? this._danger : this._danger-1);
+		var item = new Item[ROT.RNG.getWeightedValue(itemMap)](itemLevel);
+		being.setItem(item);
 	}
 }
 

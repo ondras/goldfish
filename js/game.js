@@ -93,7 +93,7 @@ var Game = {
 
 		/* FIXME build a level and position a player */
 		var overview = new Level.Overview();
-		var level = new Level.Cavern(overview, new XY(50, 15), null, 3);
+		var level = new Level.Cavern(overview, new XY(50, 15), null, 1);
 		var center = overview.getCenter();
 		this.switchLevel(level, level.getEntrance());
 //		this.switchLevel(overview, center);
