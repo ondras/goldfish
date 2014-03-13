@@ -3,15 +3,22 @@
  */
 Being.Seahorse = function() {
 	Being.call(this, {ch:"§", fg:[250, 250, 0], description:"seahorse"});
-	/* FIXME faster? */
+	this._stats.speed = Math.round(this._stats.speed * 1.5);
 }
 Being.Seahorse.extend(Being);
 
 Being.Seahorse.CHATS = [
 	"These waters are dangerous!",
-	"Did you know? Jellyfish can harm all living creatures.",
-	"Did you know? You will run out of oxygen if you spend too much time underwater."
-	/* FIXME */
+	"Jellyfish can harm all living creatures.",
+	"You will run out of oxygen if you spend too much time underwater.",
+	"All wishes can be fulfilled.",
+	"I like your scales!",
+	"Deep waters can be more dangerous than shallow ones.",
+	"You don't want to mess with an octopus.",
+	"Did you know? Crabs cannot swim!",
+	"After a tough fight, recover yourself by eating some seaweed!",
+	"I want to be a goldfish when I grow up!",
+	"I am one very happy seahorse!"
 ];
 
 Being.Seahorse.prototype.act = function() {
@@ -35,7 +42,7 @@ Being.Starfish.extend(Being.Enemy);
 Being.Starfish.prototype.act = function() {};
 
 /**
- * Clusters. FIXME
+ * Clusters.
  */
 Being.Jellyfish = function() {
 	Being.Enemy.call(this, {ch:"Ω", fg:[255, 105, 180], description:"jellyfish"});

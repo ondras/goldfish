@@ -9,3 +9,4 @@ Development log
   - Monday: stats, status, oxygen, cells
   - Tuesday: items, slots, inventory  
   - Wednesday: fishermen and their rods, quest items, quests, chats, basic enemies
+  - Thursday: AI, more enemies, level inhabitants

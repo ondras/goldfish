@@ -19,15 +19,6 @@ Level.Cavern = function(overview, xy, questItem, danger) {
 Level.Cavern.extend(Level);
 
 Level.Cavern.prototype.drawMemory = function() {
-	var xy = new XY();
-	for (var i=0;i<this._size.x;i++) {
-		xy.x = i;
-		for (var j=0;j<this._size.y;j++) {
-			xy.y = j;
-			this.draw(xy);
-		}
-	}; return;
-	
 	this._fov = {};
 	for (var xy in this._memory) {
 		this._drawWeak(XY.fromString(xy), this._memory[xy]);
@@ -44,7 +35,7 @@ Level.Cavern.prototype.getEntrance = function() {
 
 Level.Cavern.prototype.draw = function(xy) {
 	/* draw only when in player's FOV */
-	if (1 || xy in this._fov) { return Level.prototype.draw.call(this, xy); }
+	if (xy in this._fov) { return Level.prototype.draw.call(this, xy); }
 }
 
 /** setBeing completely overriden due to FOV */
