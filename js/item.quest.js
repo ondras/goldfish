@@ -17,7 +17,8 @@ Item.Quest.NORMAL = [
 	"a Hiccup cure",
 	"Courage",
 	"Happiness",
-	"a Healthy life"
+	"a Healthy life",
+	"the Holy Grail"
 ];
 
 Item.Quest.SILLY = [
@@ -33,7 +34,8 @@ Item.Quest.SILLY = [
 	"a Lutefisk",
 	"a Bottle of Slivovitz",
 	"an Apple iPhone 17q",
-	"Free Tibet"
+	"Free Tibet",
+	"a Solution to the Riemann hypothesis"
 ];
 
 Item.Quest.ALL = [];
