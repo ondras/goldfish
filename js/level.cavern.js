@@ -18,6 +18,13 @@ Level.Cavern = function(overview, xy, questItem, danger) {
 }
 Level.Cavern.extend(Level);
 
+/**
+ * Staircase needs to change color
+ */
+Level.Cavern.prototype.getQuestItem = function() {
+	return this._questItem;
+}
+
 Level.Cavern.prototype.drawMemory = function() {
 	this._fov = {};
 	for (var xy in this._memory) {

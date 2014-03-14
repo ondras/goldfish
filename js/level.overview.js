@@ -1,5 +1,10 @@
 Level.Overview = function() {
 	this._fishers = [];
+	this._noise = new ROT.Noise.Simplex();
+	this._colors = [
+		[30, 30, 200],
+		[150, 150, 240]
+	]
 
 	Level.call(this);
 
@@ -17,6 +22,15 @@ Level.Overview.prototype.drawMemory = function() {
 			this.draw(xy);
 		}
 	}
+}
+
+Level.Overview.prototype._visualAt = function(xy) {
+	var visual = Level.prototype._visualAt.call(this, xy);
+	if (visual == this._empty.getVisual()) {
+		var val = this._noise.get(xy.x/20, xy.y/20)/2 + 0.5;
+		visual.fg = ROT.Color.interpolate(this._colors[0], this._colors[1], val);
+	}
+	return visual;
 }
 
 Level.Overview.prototype.activate = function() {

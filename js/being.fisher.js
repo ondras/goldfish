@@ -6,6 +6,7 @@ Being.Fisher = function(color, delta) {
 	this._shrinking = false;
 	this._item = null;
 	this._rodChar = "";
+	this._finished = false;
 	
 	if (delta.x*delta.y == 1) {
 		this._rodChar = "\\";
@@ -55,6 +56,7 @@ Being.Fisher.prototype.interact = function(being) {
 		break;
 		
 		case 2: /* has item */
+			this._finished = true;
 			being.setQuestStatus(this, 3);
 			this._chatFinishQuest();
 		break;
@@ -68,6 +70,7 @@ Being.Fisher.prototype.interact = function(being) {
 
 Being.Fisher.prototype.act = function() {
 	if (!this._rods.length) { /* start showing rod? */
+		if (this._finished) { return; } /* finished = inactive */
 		if (ROT.RNG.getUniform() < Rules.ROD_SHOW_CHANCE) { this._growRod(); }
 		return;
 	}
@@ -127,6 +130,12 @@ Being.Fisher.prototype._getRodPosition = function(index) {
 
 Being.Fisher.prototype._chat = function(parts) {
 	Game.engine.lock();
+
+	var throwPlayer = function() {
+		var dist = Rules.ROD_LENGTH + 3;
+		var xy = this._xy.plus(new XY(this._delta.x * dist, this._delta.y * dist));
+		this._level.setBeing(Game.player, xy);
+	}.bind(this);
 	
 	var showPart = function(part, enter) {
 		Game.text.clear();
@@ -148,6 +157,7 @@ Being.Fisher.prototype._chat = function(parts) {
 		if (e.keyCode != 13) { return; }
 		showPart(parts.shift(), parts.length);
 		if (!parts.length) {
+			throwPlayer();
 			window.removeEventListener("keydown", handler, false);
 			Game.engine.unlock();
 		}

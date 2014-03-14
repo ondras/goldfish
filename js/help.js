@@ -43,7 +43,7 @@ Help.prototype._draw = function() {
 	y += 2;
 	Game.display.drawText(x, y, "• To attack, move towards your target. To enter tunnels and pick items, press %c{#fff}Enter%c{}.");
 	y += 2;
-	Game.display.drawText(x, y, "• Press %c{#fff}i%c{} to open your inventory, %c{#fff}q%c{} to view quests, %c{#fff}?%c{} for this help screen.");
+	Game.display.drawText(x, y, "• Press %c{#fff}i%c{} to open your inventory, %c{#fff}q%c{} to view quests, %c{#fff}?%c{} or %c{#fff},%c{} for this help screen.");
 	y += 2;
 	Game.display.drawText(x, y, "• Switch to fullscreen (%c{#fff}F11%c{}) for larger font.");
 

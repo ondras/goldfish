@@ -1,6 +1,7 @@
 var Quests = function(quests) {
 	this._promise = new Promise();
 	this._quests = quests;
+	Progress.questsOpened++;
 }
 
 Quests.prototype.show = function() {

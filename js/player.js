@@ -6,6 +6,9 @@ var Player = function() {
 	
 	this._stats.maxo2 = 20;
 	this._stats.o2 = this._stats.maxo2;
+
+	this._stats.attack += 1;
+
 	this._submerged = 0;
 
 	this._promise = null;
@@ -97,6 +100,9 @@ Player.prototype.getStat = function(name) {
 }
 
 Player.prototype.setPosition = function(xy, level) {
+	var dist = 1;
+	if (this._xy) { dist = this._xy.dist8(xy); }
+
 	if (level instanceof Level.Overview) {
 		this._submerged = 0;
 		this.setStat("o2", this.getStat("maxo2"));
@@ -107,7 +113,7 @@ Player.prototype.setPosition = function(xy, level) {
 
 	Being.prototype.setPosition.call(this, xy, level);
 
-	this._describe();
+	this._describe(dist);
 }
 
 Player.prototype.act = function() {
@@ -228,14 +234,14 @@ Player.prototype._useO2 = function() {
 	}
 }
 
-Player.prototype._describe = function() {
+Player.prototype._describe = function(moveDistance) {
 	var cell = this._level.getCellAt(this._xy);
 
 	if (Progress.questsGenerated == 0) {
 		Game.text.write("This is my little lake. I wonder what are all those fishermen doing here...");
 	}
 	
-	if (Progress.questsGenerated == 1 && Progress.staircasesEntered == 0 && !(cell instanceof Cell.Staircase)) {
+	if (Progress.questsGenerated == 1 && Progress.staircasesEntered == 0 && !(cell instanceof Cell.Staircase) && moveDistance == 1) {
 		Game.text.write("I must have missed that underwater tunnel in the center of the lake...");
 	}
 
@@ -262,8 +268,12 @@ Player.prototype._pick = function(item) {
 	this._items.unshift(item);
 	this._level.setItem(null, this._xy);
 
-	if (Progress.inventoryOpened < Progress.threshold) {
+	if (Progress.inventoryOpened < Progress.threshold && !(item instanceof Item.Quest)) {
 		Game.text.write("%c{#666}(press %c{#fff}i%c{#666} to open the inventory)");
+	}
+
+	if (Progress.questsOpened < Progress.threshold && (item instanceof Item.Quest)) {
+		Game.text.write("%c{#666}(press %c{#fff}q%c{#666} to open the quest log)");
 	}
 }
 

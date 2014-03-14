@@ -25,3 +25,12 @@ Cell.Staircase.prototype.activate = function(being) {
 	if (!this._target.xy) { this._target.level(); } /* callback to generate the level */
 	Game.switchLevel(this._target.level, this._target.xy);
 }
+
+Cell.Staircase.prototype.enter = function(being) {
+	var level = this._target.level;
+	if (level instanceof Level.Cavern) {
+		var item = level.getQuestItem();
+		/* already finished */
+		if (being.getItems().indexOf(item) > -1) { this._visual.fg = [100, 100, 100]; }
+	}
+}

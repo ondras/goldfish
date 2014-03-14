@@ -6,5 +6,6 @@ var Progress = {
 	inventoryOpened: 0,
 	questsGenerated: 0,
 	questsFinished: 0,
+	questsOpened: 0,
 	turns: -1
 }
