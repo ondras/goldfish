@@ -103,7 +103,6 @@ Being.Jellyfish.prototype._jellyNeighborCount = function(xy) {
 Being.Crab = function() {
 	Being.Enemy.call(this, {ch:"x", fg:[250, 50, 50], description:"crab"});
 	this._stats.defense += 1;
-	this._stats.attack;
 	this._aggressive = true;
 }
 Being.Crab.extend(Being.Enemy);
@@ -137,7 +136,8 @@ Being.Piranha = function() {
 	Being.Enemy.call(this, {ch:"p", fg:[200, 200, 200], description:"piranha"});
 	this._stats.defense;
 	this._stats.attack += 1;
-	this._stats.hp;
+	this._stats.maxhp += 1;
+	this._stats.hp = this._stats.maxhp;
 	this._aggressive = true;
 }
 Being.Piranha.extend(Being.Enemy);
@@ -147,6 +147,7 @@ Being.Piranha.extend(Being.Enemy);
  */
 Being.Snake = function() {
 	Being.Enemy.call(this, {ch:"s", fg:[50, 250, 50], description:"water snake"});
+	this._stats.speed += 1;
 	this._stats.defense += 1;
 	this._stats.attack += 1;
 	this._aggressive = (ROT.RNG.getUniform() > 0.5);
@@ -158,9 +159,11 @@ Being.Snake.extend(Being.Enemy);
  */
 Being.LargeSnake = function() {
 	Being.Enemy.call(this, {ch:"S", fg:[30, 200, 30], description:"large snake"});
+	this._stats.speed += 1;
 	this._stats.defense += 2;
 	this._stats.attack += 2;
-	this._stats.hp += 2;
+	this._stats.maxhp += 2;
+	this._stats.hp = this._stats.maxhp;
 	this._aggressive = true;
 }
 Being.LargeSnake.extend(Being.Enemy);
@@ -176,13 +179,13 @@ Being.Fish.extend(Being.Enemy);
 
 /**
  * Agressive.
- * FIXME tentacles.
  */
 Being.Octopus = function() {
 	Being.Enemy.call(this, {ch:"O", fg:[200, 50, 200], description:"octopus"});
 	this._stats.defense += 3;
 	this._stats.attack += 3;
-	this._stats.hp += 3;
+	this._stats.maxhp += 3;
+	this._stats.hp = this._stats.maxhp;
 	this._aggressive = true;
 }
 Being.Octopus.extend(Being.Enemy);

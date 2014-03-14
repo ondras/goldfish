@@ -46,7 +46,7 @@ var Game = {
 				this.text.configure({
 					display: this.display,
 					position: new XY(0, 0),
-					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
+					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT)
 				});
 				this.text.clear();
 
