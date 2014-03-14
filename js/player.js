@@ -181,6 +181,8 @@ Player.prototype.handleEvent = function(e) {
 		break;
 		
 		case ROT.VK_RETURN:
+		case ROT.VK_NUMPAD5:
+		case ROT.VK_CLEAR:
 			var item = this._level.getItemAt(this._xy);
 			var cell = this._level.getCellAt(this._xy);
 			if (item) {

@@ -172,6 +172,7 @@ Being.Fisher.prototype._chatGiveQuest = function() {
 		{
 			text: [
 				"Wow, a goldfish! This is going to be a fine meal.",
+				"Look what I caught! A goldfish. Looks rather small...",
 				"Well, well, well. What do we have here. A goldfish?"
 			].random(),
 			who: "f"

@@ -16,7 +16,8 @@ Item.Quest.NORMAL = [
 	"a Cadillac Escalade",
 	"a Hiccup cure",
 	"Courage",
-	"Happiness"
+	"Happiness",
+	"Healthy life"
 ];
 
 Item.Quest.SILLY = [
@@ -30,7 +31,8 @@ Item.Quest.SILLY = [
 	"a Scroll of chaos resistance",
 	"an Amulet of life saving",
 	"a Lutefisk",
-	"a Bottle of Slivovitz"
+	"a Bottle of Slivovitz",
+	"an Apple iPhone 17q"
 ];
 
 Item.Quest.ALL = [];
