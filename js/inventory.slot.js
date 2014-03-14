@@ -1,4 +1,4 @@
-/* FIXME two-column mode for too many items? */
+/* FIXME scrolling */
 Inventory.Slot = function(slot, being) {
 	this._slot = slot;
 	this._being = being;

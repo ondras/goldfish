@@ -1,5 +1,5 @@
 Being.Fisher = function(color, delta) {
-	Being.call(this, {fg:color, ch:"F"});
+	Being.call(this, {fg:color, ch:"F", description:"fisherman"});
 
 	this._delta = delta;
 	this._rods = [];

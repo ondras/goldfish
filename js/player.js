@@ -127,6 +127,7 @@ Player.prototype.die = function() {
 
 Player.prototype.handleEvent = function(e) {
 	if (e.ctrlKey || e.altKey) { return; }
+	if (e.keyCode == ROT.VK_SHIFT) { return; }
 
 	window.removeEventListener("keydown", this);
 	Game.text.clear();
@@ -154,17 +155,23 @@ Player.prototype.handleEvent = function(e) {
 
 	switch (e.keyCode) {
 		case ROT.VK_I:
+			e.preventDefault();
 			var inventory = new Inventory(this);
 			inventory.show().then(this._redraw.bind(this));
 		break;
 
 		case ROT.VK_Q:
+			e.preventDefault();
 			var quests = new Quests(this._quests);
 			quests.show().then(this._redraw.bind(this));
 		break;
 		
 		case ROT.VK_QUESTION_MARK: 
-			/* FIXME help */
+		case ROT.VK_SLASH: 
+		case ROT.VK_COMMA: 
+			e.preventDefault();
+			var quests = new Help(false);
+			quests.show().then(this._redraw.bind(this));
 		break;
 		
 		case ROT.VK_RETURN:
@@ -223,7 +230,15 @@ Player.prototype._useO2 = function() {
 
 Player.prototype._describe = function() {
 	var cell = this._level.getCellAt(this._xy);
+
+	if (Progress.questsGenerated == 0) {
+		Game.text.write("This is my little lake. I wonder what are all those fishermen doing here...");
+	}
 	
+	if (Progress.questsGenerated == 1 && Progress.staircasesEntered == 0 && !(cell instanceof Cell.Staircase)) {
+		Game.text.write("I must have missed that underwater tunnel in the center of the lake...");
+	}
+
 	if (cell.getVisual().description) {
 		Game.text.write("You see %a.".format(cell));
 		
@@ -243,8 +258,8 @@ Player.prototype._describe = function() {
 
 Player.prototype._pick = function(item) {
 	Progress.itemsPicked++;
-	Game.text.write("You pick up %a.".format(item));
-	this._items.push(item);
+	Game.text.write("You pick up %the.".format(item));
+	this._items.unshift(item);
 	this._level.setItem(null, this._xy);
 
 	if (Progress.inventoryOpened < Progress.threshold) {

@@ -1,4 +1,3 @@
-/* FIXME jak poresit info o staircase po vygenerovani prvniho? */
 var Game = {
 	TEXT_HEIGHT: 3,
 	STATUS_HEIGHT: 3,
@@ -27,13 +26,44 @@ var Game = {
 
 	handleEvent: function(e) {
 		switch (e.type) {
+			case "keypress":
+				window.removeEventListener(e.type, this);
+				document.body.innerHTML = "";
+
+				this.player = new Player();
+
+				var options = {
+					width: this.MAP_SIZE.x,
+					height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
+					fontFamily: "droid sans mono",
+					spacing: 1.1,
+					fg: "#aaa"
+				}
+				this.display = new ROT.Display(options);
+				this.status = new Status(this.display);
+
+				this.text = new TextBuffer(this.display);
+				this.text.configure({
+					display: this.display,
+					position: new XY(0, 0),
+					size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
+				});
+				this.text.clear();
+
+				document.body.appendChild(this.display.getContainer());
+				window.addEventListener("resize", this);
+				this._resize();
+
+				this._help();
+			break;
+
 			case "resize":
 				this._resize();
 			break;
 			
 			case "load":
 				window.removeEventListener("load", this);
-				setTimeout(this._start.bind(this), 100); /* async load font */
+				this._intro();
 			break;
 		}
 	},
@@ -50,6 +80,15 @@ var Game = {
 		this.level.activate();
 		this.level.setBeing(this.player, xy);
 	},
+
+	_intro: function() {
+		window.addEventListener("keypress", this);
+	},
+
+	_help: function() {
+		var help = new Help(true);
+		help.show().then(this._start.bind(this));
+	},
 	
 	_resize: function() {
 		var w = window.innerWidth;
@@ -65,39 +104,10 @@ var Game = {
 	_start: function() {
 		this.scheduler = new ROT.Scheduler.Speed();
 		this.engine = new ROT.Engine(this.scheduler);
-		
-		var options = {
-			width: this.MAP_SIZE.x,
-			height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
-			fontFamily: "droid sans mono",
-			spacing: 1.1,
-			fg: "#aaa"
-		}
-		this.display = new ROT.Display(options);
 
-		this.status = new Status(this.display);
-
-		this.text = new TextBuffer(this.display);
-		this.text.configure({
-			display: this.display,
-			position: new XY(0, 0),
-			size: new XY(this.MAP_SIZE.x, this.TEXT_HEIGHT-1)
-		});
-		this.text.clear();
-
-		document.body.appendChild(this.display.getContainer());
-		window.addEventListener("resize", this);
-		this._resize();
-
-		this.player = new Player();
-
-		/* FIXME build a level and position a player */
+		/* build a level and position a player */
 		var overview = new Level.Overview();
-		var level = new Level.Cavern(overview, new XY(50, 15), null, 1);
-		var center = overview.getCenter();
-		this.switchLevel(level, level.getEntrance());
-//		this.switchLevel(overview, center);
-
+		this.switchLevel(overview, overview.getCenter());
 		this.engine.start();
 	}
 }

@@ -20,6 +20,7 @@ Inventory.prototype.handleEvent = function(e) {
 	switch (e.type) {
 		case "keydown":
 			if (e.keyCode == 27 || e.keyCode == ROT.VK_Z) { /* close */
+				e.preventDefault();
 				this._hide();
 				this._promise.fulfill();
 			}
@@ -29,6 +30,7 @@ Inventory.prototype.handleEvent = function(e) {
 			var code = e.charCode;
 			var index = e.charCode - "1".charCodeAt(0);
 			if (index < 0 || index >= 8) { return; }
+			e.preventDefault();
 
 			this._hide();
 

@@ -29,7 +29,8 @@ Item.Quest.SILLY = [
 	"the One Ring",
 	"a Scroll of chaos resistance",
 	"an Amulet of life saving",
-	"a Lutefisk"
+	"a Lutefisk",
+	"a Bottle of Slivovitz"
 ];
 
 Item.Quest.ALL = [];

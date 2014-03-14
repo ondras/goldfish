@@ -8,7 +8,31 @@ body {
 	margin: 0;
 	background-color: #000;
 	overflow: hidden;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+pre {
 	font-family: droid sans mono;
+	font-size: 2.5vh;
+	color: #ccc;
+	font-weight: bold;
+	text-align: center;
+}
+
+pre.gold {
+	color: rgb(255, 220, 120);
+}
+
+pre.wave {
+	color: rgb(20, 20, 150);
 }
 
 canvas {

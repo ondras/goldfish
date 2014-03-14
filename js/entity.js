@@ -43,7 +43,12 @@ Entity.prototype.toString = function() {
     return this._visual.description;
 }
 
+Entity.prototype.formatHelp  = function() {
+	return "%c{" + ROT.Color.toRGB(this._visual.fg) + "}"  +this._visual.ch + "%c{} " + this._visual.description;
+}
+
 String.format.map.a = "a";
 String.format.map.the = "the";
 String.format.map.verb = "verb";
 String.format.map.it = "it";
+String.format.map.h = "formatHelp";

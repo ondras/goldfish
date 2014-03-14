@@ -273,7 +273,7 @@ Level.Cavern.prototype._createBeings = function() {
 			this._createCrab(3);
 			
 			this._createBeing(Being.Snake, [1, 3]);
-			this._createBeing(Being.Swordfish, [1, 3]);
+			this._createBeing(Being.Fish, [1, 3]);
 		break;
 		
 		case 2:
@@ -283,7 +283,7 @@ Level.Cavern.prototype._createBeings = function() {
 
 			this._createBeing(Being.Piranha, [1, 3]);
 			this._createBeing(Being.Snake, [1, 3]);
-			this._createBeing(Being.Swordfish, [1, 3]);
+			this._createBeing(Being.Fish, [1, 3]);
 		break;
 		
 		case 3:
@@ -294,12 +294,11 @@ Level.Cavern.prototype._createBeings = function() {
 			this._createBeing(Being.Piranha, [1, 3]);
 			this._createBeing(Being.Snake, [1, 3]);
 			this._createBeing(Being.LargeSnake, [1, 3]);
-			this._createBeing(Being.Swordfish, [1, 3]);
+			this._createBeing(Being.Fish, [1, 3]);
 		break;
 	}
 	
 	this._createBeing(Being.Seahorse, 2);
-	// FIXME this._createBeing(Being.GenericFish, 5);
 	this._createStarfish(4);
 
 	var itemMap = {

@@ -15,6 +15,7 @@ Quests.prototype.show = function() {
 
 Quests.prototype.handleEvent = function(e) {
 	if (e.keyCode == 27 || e.keyCode == ROT.VK_Z) { /* close */
+		e.preventDefault();
 		window.removeEventListener("keydown", this);
 		Game.text.clear();
 		this._promise.fulfill();

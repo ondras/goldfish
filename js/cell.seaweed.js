@@ -1,6 +1,6 @@
 Cell.Seaweed = function() {
 	Cell.call(this, {
-		ch: "",
+		ch: "(",
 		fg: [40, 200, 40],
 		description: "seaweed"
 	}, false);

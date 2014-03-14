@@ -19,7 +19,7 @@ Cell.wall = new Cell({
 
 Cell.grass = new Cell({
 	ch: "#",
-	fg: [136, 170, 102],
+	fg: [120, 150, 80],
 	description: "grass"
 }, true);
 

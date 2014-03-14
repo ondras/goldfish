@@ -158,19 +158,18 @@ Being.LargeSnake.extend(Being.Enemy);
 /**
  * Non-agressive.
  */
-Being.Swordfish = function() {
-	/* FIXME char */
-	Being.Enemy.call(this, {ch:"&", fg:[200, 200, 200], description:"swordfish"});
+Being.Fish = function() {
+	var hue = ROT.RNG.getUniform();
+	Being.Enemy.call(this, {ch:"f", fg:ROT.Color.hsl2rgb([hue, 1, 0.5]), description:"rainbow fish"});
 }
-Being.Swordfish.extend(Being.Enemy);
+Being.Fish.extend(Being.Enemy);
 
 /**
  * Agressive.
+ * FIXME tentacles.
  */
 Being.Octopus = function() {
 	Being.Enemy.call(this, {ch:"O", fg:[200, 50, 200], description:"octopus"});
 	this._aggressive = true;
 }
 Being.Octopus.extend(Being.Enemy);
-
-/* FIXME nejakou tuctovou rybu */

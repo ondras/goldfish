@@ -38,7 +38,7 @@ Help.prototype._draw = function() {
 	}
 	Game.text.flush();
 
-	var x = 0, y = Game.TEXT_HEIGHT;
+	var x = 3, y = Game.TEXT_HEIGHT + 1;
 	Game.display.drawText(x, y, "• To move around (8 directions), use %c{#fff}arrows%c{}, %c{#fff}numpad%c{} or %c{#fff}vim-keys%c{}.");
 	y += 2;
 	Game.display.drawText(x, y, "• To attack, move towards your target. To enter tunnels and pick items, press %c{#fff}Enter%c{}.");
@@ -47,8 +47,8 @@ Help.prototype._draw = function() {
 	y += 2;
 	Game.display.drawText(x, y, "• Switch to fullscreen (%c{#fff}F11%c{}) for larger font.");
 
-	y += 3;
-	var x1 = 3, x2 = x1 + Math.round(Game.MAP_SIZE.x/3), x3 = x2 + Math.round(Game.MAP_SIZE.x/3);
+	y += 4;
+	var x1 = 5, x2 = x1 + Math.round(Game.MAP_SIZE.x/3), x3 = x2 + Math.round(Game.MAP_SIZE.x/3);
 
 	Game.display.drawText(x1, y, "%h".format(Cell.grass));
 	Game.display.drawText(x2, y, "%c{#66f}≈%c{} water");
@@ -73,6 +73,6 @@ Help.prototype._draw = function() {
 	y += 1;
 	Game.display.drawText(x1, y, "%h".format(new Being.Snake()));
 	Game.display.drawText(x2, y, "%h".format(new Being.LargeSnake()));
-	Game.display.drawText(x3, y, "%h".format(new Being.Swordfish()));
+	Game.display.drawText(x3, y, "%h".format(new Being.Fish()));
 
 }
