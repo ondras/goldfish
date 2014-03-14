@@ -20,9 +20,9 @@ a:hover {
 }
 
 pre {
-	font-family: droid sans mono;
+	font-family: droid sans mono, monospace;
 	font-size: 2.5vh;
-	color: #ccc;
+	color: #aaa;
 	font-weight: bold;
 	text-align: center;
 }
@@ -33,8 +33,39 @@ pre.gold {
 
 pre.wave {
 	color: rgb(20, 20, 150);
+	-webkit-animation: wave 5s alternate infinite;
+	animation: wave 5s alternate infinite;
 }
 
 canvas {
 	position: absolute;
+}
+
+pre.blink {
+	-webkit-animation: blink 1s alternate infinite;
+	animation: blink 1s alternate infinite;
+}
+
+@keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@-webkit-keyframes blink {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+@keyframes wave {
+	0% { color: rgb(0, 0, 50); }
+	50% { color: rgb(30, 30, 150); }
+	100% { color: rgb(50, 50, 250); }
+}
+
+@-webkit-keyframes wave {
+	0% { color: rgb(0, 0, 50); }
+	50% { color: rgb(30, 30, 150); }
+	100% { color: rgb(50, 50, 250); }
 }

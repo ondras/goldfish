@@ -35,7 +35,7 @@ var Game = {
 				var options = {
 					width: this.MAP_SIZE.x,
 					height: this.TEXT_HEIGHT + this.STATUS_HEIGHT + this.MAP_SIZE.y,
-					fontFamily: "droid sans mono",
+					fontFamily: "droid sans mono, monospace",
 					spacing: 1.1,
 					fg: "#aaa"
 				}
