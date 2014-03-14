@@ -1,9 +1,10 @@
-/* FIXME scrolling */
 Inventory.Slot = function(slot, being) {
 	this._slot = slot;
 	this._being = being;
 	this._items = this._filterItems(this._being.getItems());
 	this._usableItems = [];
+	this._pageSize = Math.min(24, Game.MAP_SIZE.y - 4);
+	this._offset = 0;
 	this._promise = new Promise();
 }
 
@@ -22,7 +23,6 @@ Inventory.Slot.prototype._hide = function() {
 	window.removeEventListener("keydown", this);
 	window.removeEventListener("keypress", this);
 	Game.text.clear();
-	this._promise.fulfill();
 }
 
 Inventory.Slot.prototype.handleEvent = function(e) {
@@ -30,10 +30,19 @@ Inventory.Slot.prototype.handleEvent = function(e) {
 		case "keydown":
 			if (e.keyCode == 27 || e.keyCode == ROT.VK_Z) { /* close */
 				this._hide();
+				this._promise.fulfill();
 			}
 		break;
 
 		case "keypress":
+			if (e.charCode == "+".charCodeAt(0)) {
+				this._changePage(1);
+				return;
+			} else if (e.charCode == "-".charCodeAt(0)) {
+				this._changePage(-1);
+				return;
+			}
+
 			var code = e.charCode;
 			var index = e.charCode - "a".charCodeAt(0);
 			if (index < 0 || index >= this._usableItems.length) { return; }
@@ -42,14 +51,38 @@ Inventory.Slot.prototype.handleEvent = function(e) {
 			this._slot.setItem(item);
 
 			this._hide();
+			this._promise.fulfill();
 		break;
 	}
+}
+
+Inventory.Slot.prototype._changePage = function(diff) {
+	if (this._offset == 0 && diff == -1) { return; }
+	if (this._offset + this._pageSize >= this._items.length && diff == 1) { return; }
+
+	this._offset += diff*this._pageSize;
+	this._hide();
+	this.show();
 }
 
 Inventory.Slot.prototype._draw = function() {
 	Game.text.clear();
 
-	this._items.forEach(this._drawItem, this);
+
+	var y = Game.TEXT_HEIGHT;
+	if (this._offset) {
+		Game.display.drawText(3, y, "--- press %c{#fff}−%c{} for previous page ---");
+		y += 2;
+	}
+
+	this._usableItems = [];
+	for (var i=this._offset; i<Math.min(this._offset+this._pageSize, this._items.length); i++) {
+		this._drawItem(this._items[i], y++);
+	}
+
+	if (this._offset + this._pageSize < this._items.length) {
+		Game.display.drawText(3, y+1, "--- press %c{#fff}+%c{} for next page ---");
+	}
 
 	var letters = this._usableItems.map(function(item, index) {
 		return String.fromCharCode("A".charCodeAt(0) + index);
@@ -69,7 +102,7 @@ Inventory.Slot.prototype._filterItems = function(items) {
 	return items.filter(this._slot.accepts, this._slot);
 }
 
-Inventory.Slot.prototype._drawItem = function(item, index) {
+Inventory.Slot.prototype._drawItem = function(item, y) {
 	if (this._isItemUsed(item)) {
 		var color = "";
 		var letter = "*";
@@ -79,7 +112,6 @@ Inventory.Slot.prototype._drawItem = function(item, index) {
 		var color = "#fff";
 	}
 
-	var y = index + 3;
 	var x = 3;
 
 	Game.display.draw(x, y, letter, color);
