@@ -50,6 +50,9 @@ Help.prototype._draw = function() {
 	y += 4;
 	var x1 = 5, x2 = x1 + Math.round(Game.MAP_SIZE.x/3), x3 = x2 + Math.round(Game.MAP_SIZE.x/3);
 
+	Game.display.drawText(x2, y, "%h".format(Game.player));
+	y += 2;
+
 	Game.display.drawText(x1, y, "%h".format(Cell.grass));
 	Game.display.drawText(x2, y, "%c{#66f}≈%c{} water");
 	Game.display.drawText(x3, y, "%h".format(Cell.shore));
@@ -58,7 +61,7 @@ Help.prototype._draw = function() {
 	Game.display.drawText(x2, y, "%h".format(new Cell.Bubble()));
 	Game.display.drawText(x3, y, "%h".format(new Cell.Seaweed()));
 	y += 1;
-	Game.display.drawText(x1, y, "%h".format(Game.player));
+	Game.display.drawText(x1, y, "%h".format(new Being.Fisher([250, 50, 50], new XY(1, 1))));
 	Game.display.drawText(x2, y, "%c{#fff}<>%c{} underwater tunnel");
 	Game.display.drawText(x3, y, "%c{#fff}?%c{} an item");
 
