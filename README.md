@@ -1,7 +1,7 @@
 Goldfish
 ========
 
-*Making the world a better place, one wish at a time*
+*Making the world a better place, one wish/fish at a time*
 
 ![Screenshot](screenshot.png)
 
